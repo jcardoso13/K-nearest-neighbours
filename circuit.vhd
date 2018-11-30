@@ -5,13 +5,10 @@ use IEEE.NUMERIC_STD.ALL;
 entity circuit is
 
 port(
-clk, rst: in std_logic;
-reg_input_x,reg_input_y,
-	reg_input_x0,reg_input_y0: in signed(8 downto 0);
-	
-	reg_input_Q00,reg_input_Q01,
-	reg_input_Q10,reg_input_Q11: in signed(9 downto 0);
-	output: out std_logic_vector(9 downto 0)
+	clk in std_logic; 
+	rst: in std_logic;
+	init: in std_logic;
+	result: out std_logic_vector(1 downto 0)
 );
 end circuit;
 
@@ -21,110 +18,81 @@ architecture Behavioral of circuit is
 component control_unit
 port(
 	clk: in std_logic;
-	rst: in std_logic; 
-	sel_reg1: out std_logic_vector(2 downto 0);
-	sel_reg2: out std_logic_vector(2 downto 0);
-	sel_reg3: out std_logic_vector(2 downto 0);
-	sel_reg4: out std_logic_vector(2 downto 0);
-	sel_reg5: out std_logic_vector(1 downto 0);
-	sel_reg6: out std_logic_vector(1 downto 0);
-	sel_out1: out std_logic_vector(1 downto 0);
-	sel_out2: out std_logic_vector(1 downto 0);
-	sel_out3: out std_logic_vector(1 downto 0);
-	sel_out4: out std_logic_vector(1 downto 0);
-	load: out std_logic_vector(3 downto 0);
-	sel_add: out std_logic_vector(1 downto 0);
-	trunc: out std_logic;
-	seq: out std_logic;
-	done: out std_logic
+	rst: in std_logic;
+	init: in std_logic;
+	k_out: out std_logic;
+	load: out std_logic;
 );
 end component;
 
-component datapath_unit is
+component datapath1 is
+port(
+	clk: in std_logic;
+    rst: in std_logic;
+	load: in std_logic;
+	A: in unsigned(63 downto 0); 
+	B: in unsigned(63 downto 0);
+    C: out signed(33 downto 0) 
+	
+);
+end component;
+
+component datapath2 is
+port(
+	
+	clk: in std_logic;
+	rst: in std_logic;
+	load: in std_logic;
+	A: in signed(33 downto 0);
+	k: in std_logic_vector(2 downto 0);
+    result: out std_logic_vector(1 downto 0)
+end component;
+
+component mem is
 port(
 	clk: in std_logic;
 	rst: in std_logic;
-	sel_reg1: in std_logic_vector(2 downto 0);
-	sel_reg2: in std_logic_vector(2 downto 0);
-	sel_reg3: in std_logic_vector(2 downto 0);
-	sel_reg4: in std_logic_vector(2 downto 0);
-	sel_reg5: in std_logic_vector(1 downto 0);
-	sel_reg6: in std_logic_vector(1 downto 0);
-	sel_out1: in std_logic_vector(1 downto 0);
-	sel_out2: in std_logic_vector(1 downto 0);
-	sel_out3: in std_logic_vector(1 downto 0);
-	sel_out4: in std_logic_vector(1 downto 0);
-	load: in std_logic_vector(3 downto 0);
-	seq: in std_logic;
-	sel_add: in std_logic_vector(1 downto 0);
-	trunc: in std_logic;
-	reg_input_x, reg_input_y,
-     reg_input_x0, reg_input_y0: in signed(8 downto 0);
-     reg_input_Q00, reg_input_Q01,
-        reg_input_Q10,reg_input_Q11: in signed(9 downto 0);
-    output: out std_logic_vector(9 downto 0);
-    done: in std_logic
-);
-end component;
+	load: in std_logic;
+	operand: in unsigned(15 downto 0);
+	init: in std_logic
+	
 
-signal 	sel_reg1,sel_reg2,sel_reg3,sel_reg4: std_logic_vector(2 downto 0);
-signal 	sel_reg5,sel_reg6: std_logic_vector(1 downto 0); 
-signal sel_out1,sel_out2,sel_out3,sel_out4:std_logic_vector(1 downto 0);
-signal load: std_logic_vector(3 downto 0);
-signal seq: std_logic;
-signal sel_add:std_logic_vector(1 downto 0);
-signal trunc:std_logic;
-signal done: std_logic;
+    );
 
 begin
 
 inst_control: control_unit port map (
 	clk => clk,
 	rst => rst,
-	sel_reg1 => sel_reg1,
-	sel_reg2 => sel_reg2,
-	sel_reg3 => sel_reg3,
-	sel_reg4 => sel_reg4,
-	sel_reg5 => sel_reg5,
-	sel_reg6 => sel_reg6,
-	sel_out1 => sel_out1,
-	sel_out2 => sel_out2,
-	sel_out3 => sel_out3,
-	sel_out4 => sel_out4,
+	init => init,
 	load => load,
-	sel_add => sel_add, 
-	trunc => trunc,
-	seq => seq,
-	done => done
+	k_out => k_out
 );
 
-inst_datapath: datapath_unit port map (
+inst_datapath1: datapath1 port map (
 	clk => clk,
 	rst => rst,
-	sel_reg1 => sel_reg1,
-	sel_reg2 => sel_reg2,
-	sel_reg3 => sel_reg3,
-	sel_reg4 => sel_reg4,
-	sel_reg5 => sel_reg5,
-	sel_reg6 => sel_reg6,
-	sel_out1 => sel_out1,
-	sel_out2 => sel_out2,
-	sel_out3 => sel_out3,
-	sel_out4 => sel_out4,
 	load => load,
-	sel_add => sel_add, 
-	trunc => trunc,
-	seq => seq,
-	reg_input_x=>reg_input_x,
-	reg_input_y=>reg_input_y,
-    reg_input_x0=>reg_input_x0,
-    reg_input_y0=>reg_input_y0,
-    reg_input_Q00=>reg_input_Q00,
-    reg_input_Q01=>reg_input_Q01,
-    reg_input_Q10=>reg_input_Q10,
-    reg_input_Q11=>reg_input_Q11,
-    output => output,
-    done => done
+	A => A,
+	k => k_out,
+	result => result
+);
+
+inst_datapath2: datapath2 port map (
+	clk => clk,
+	rst => rst,
+	load => load, 
+	A => A,
+	B => B,
+	C => C
+);
+
+inst_mem: mem port map (
+	clk => clk,
+	rst => rst,
+	load => load,
+	operand =>operand,
+	init => init
 );
 
 end Behavioral;
