@@ -7,15 +7,21 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 entity control_unit is
 
 port(
-	--input--
+	-- INOUTS --
 	clk: in std_logic;
 	rst: in std_logic;
 	init: in std_logic;
-	k: in std_logic;
+	done: in std_logic;
+	k: in std_logic_vector (2 downto 0);
 	
-	--output--
-	k_out: out std_logic;
-	load: out std_logic
+	new_instance: in std_logic_vector( 15 downto 0);
+	
+	
+	-- OUTPUTS --
+	k_out: out std_logic_vector(2 downto 0); -- FOR DATAPATH2
+	load: out std_logic_vector(1 downto 0); -- FOR DATAPATH1 AND DATAPATH2
+	operand: out std_logic_vector (15 downto 0); -- FOR MEM.VHD
+	result_ready: out std_logic -- FOR THE FPGA
 );
 
 end control_unit;
@@ -23,7 +29,7 @@ end control_unit;
 
 architecture Behavioral of control_unit is
 
-	type fsm_states is ( s_initial, s_execution,s_end);
+	type fsm_states is ( s_initial, s_new_instance, s_old_instance ,s_end);
 	signal currstate, nextstate: fsm_states;
 	
 
@@ -47,13 +53,35 @@ begin  --  process
     
 	case currstate is
 		when s_initial =>
-			nextstate <= s_execution;
+		if init = '1' then 
+			if (new_instance = previous_state) then
+			nextstate <= s_new_instance;
+			else nextstate <= s_old_instance;	
+			end if;
+			operand <= new_instance; 
+			result_ready <= '0';
+		end if;
+		
 			
-		when s_execution =>
-			nextstate <= s_end;
 			
+		when s_new_instance =>
+		if (done = '1') then nextstate <= s_end;
+			load <= "11"; -- LOAD FOR DATAPATH1 AND DATAPATH2
+			k_out <= k;
+		
+		when s_old_instance =>
+		
+		if (done ='1') then nextstate <= s_end;
+			load <= '01'; -- LOAD ONLY FOR DATAPATH2
+			k_out <= k;
 		when s_end =>
+		
 			nextstate <= s_initial;
+			load <= "00";
+			k_out <= "000";	
+			previous_state <= new_instance; -- TO COMPARE IN THE NEXT LOOP
+			operand <= (others => '0'); 
+			result_ready <= '1'; -- FOR THE FPGA 
 			
 	 end case;
  end process;

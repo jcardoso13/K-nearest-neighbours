@@ -4,10 +4,10 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity adder is
 port(
-	A: in unsigned(16 downto 0); -- Q4.13 --
-	B: in unsigned(16 downto 0); -- Q4.13--
-	C: out unsigned(16 downto 0); --Q4.13--
-	sel_add: in std_logic
+	A: in signed(31 downto 0); -- Q6.26 --
+	B: in signed(31 downto 0); -- Q6.26 --
+	C: out signed(31 downto 0) -- Q6.26 --
+
 	);
 end adder;
 
@@ -17,6 +17,6 @@ architecture Behavioral of adder is
 
 
 begin
-C <= A+B when sel_add='0' else A-B;
+C <= A+B; 
 
 end Behavioral;
