@@ -54,7 +54,7 @@ begin  --  process
 	case currstate is
 		when s_initial =>
 		if init = '1' then 
-			if (new_instance = previous_state) then
+			if (new_instance == previous_state) then
 			nextstate <= s_new_instance;
 			else nextstate <= s_old_instance;	
 			end if;

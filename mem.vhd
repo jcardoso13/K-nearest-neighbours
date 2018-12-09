@@ -14,25 +14,49 @@ port(
 	);
 end mem;
 
-
 architecture Behavioral of mem is
 
-type memRAM is array(0 to 107) of std_logic_vector(15 downto 0);
-signal instance_mem: memRAM;
+
+component blk_mem_gen_0 is
+  Port ( 
+    clka : in STD_LOGIC;
+    wea : in STD_LOGIC_VECTOR ( 0 to 0 );
+    addra : in STD_LOGIC_VECTOR ( 8 downto 0 );
+    dina : in STD_LOGIC_VECTOR ( 15 downto 0 );
+    douta : out STD_LOGIC_VECTOR ( 15 downto 0 );
+    clkb : in STD_LOGIC;
+    web : in STD_LOGIC_VECTOR ( 0 to 0 );
+    addrb : in STD_LOGIC_VECTOR ( 8 downto 0 );
+    dinb : in STD_LOGIC_VECTOR ( 15 downto 0 );
+    doutb : out STD_LOGIC_VECTOR ( 15 downto 0 )
+  );
+
+
 -- DEFINE mem instance here
 signal data_out: std_logic_vector(15 downto 0); --Q3.13
 
 begin
 
-data_out <= instance_mem(Counter);
 
+
+training_mem:blk_mem_ port map(
+addra => addr,
+wea => 0,
+clka => clk,
+clkb => clk,
+web => 0,
+dina => 0,
+dinb => 0,
+douta => data_out,
+doutb => 0,
+);
 process (clk)
  begin
  if clk'event and clk='1' then
 	if rst='1' then
-		Counter <= "0000000";
+		addr <= "0000000";
 	elsif init='1' then
-		Counter <= Counter+1;
+		addr <= addr+1;
  end if;
  end if;
  end process;

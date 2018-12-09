@@ -65,67 +65,67 @@ signal out_adder1, out_adder2: signed( 33 downto 0);
 begin
 
 
-inst_sub1: subtractor portmap(
+inst_sub1: subtractor port map(
 A => A_in(15) & A_in(15 downto 0);
 B => B_in(15) & B_in(15 downto 0);
 C => output_sub1
 );
 
-inst_sub2: subtractor portmap(
+inst_sub2: subtractor port map(
 A => A_in(31) & A_in(31 downto 16);
 B => B_in(31) & B_in(31 downto 16);
 C => output_sub2
 );
 
-inst_sub3: subtractor portmap(
+inst_sub3: subtractor port map(
 A => A_in(47) & A_in(47 downto 32);
 B => B_in(47) & B_in(47 downto 32);
 C => output_sub3
 );
 
-inst_sub4: subtractor portmap(
+inst_sub4: subtractor port map(
 A => A_in(63) & A_in(63 downto 48);
 B => B_in(63) & B_in(63 downto 48);
 C=> output_sub4
 );
 
-inst_mult1: mult portmap(
+inst_mult1: mult port map(
 A=> out_sub1,
 B=> out_sub1,
 C=> output_mult1
 );
 
-inst_mult2: mult portmap(
+inst_mult2: mult port map(
 A=> out_sub2,
 B=> out_sub2,
 C=> output_mult2
 );
 
-inst_mult3: mult portmap(
+inst_mult3: mult port map(
 A=> out_sub3,
 B=> out_sub3,
 C=> out_mult3
 );
 
-inst_mult4: mult portmap(
+inst_mult4: mult port map(
 A=> out_sub4,
 B=> out_sub4,
 C=> output_mult4
 );
 
-inst_adder1: adder portmap(
+inst_adder1: adder port map(
 A=> out_mult1(31 downto 0),
 B=> out_mult2(31 downto 0),
 C=> output_adder1
 );
 
-inst_adder2: adder portmap(
+inst_adder2: adder port map(
 A=> out_mult3(31 downto 0),
 B=> out_mult4(31 downto 0),
 C=> output_adder2
 );
 
-inst_adder3: adder portmap(
+inst_adder3: adder port map(
 A => out_adder1,
 B=> out_adder2,
 C=> output_adder3
