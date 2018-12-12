@@ -8,7 +8,6 @@ use IEEE.NUMERIC_STD.ALL;
 entity mem is
 port(
     clk,rst,load: in std_logic;
-	operand: in unsigned(15 downto 0);
 	init: in std_logic;
 	data_out: out std_logic_vector(15 downto 0)
 	);

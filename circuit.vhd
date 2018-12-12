@@ -8,7 +8,7 @@ port(
 	clk: in std_logic; 
 	rst: in std_logic;
 	init: in std_logic;
-	instance: in std_logic_vector(15 downto 0);
+	new_instance: in std_logic_vector(15 downto 0);
 	k: in std_logic_vector(2 downto 0);
 	result: out std_logic_vector(1 downto 0)
 );
@@ -28,7 +28,7 @@ port(
 	new_instance: in std_logic_vector( 15 downto 0);
 	k_out: out std_logic_vector(2 downto 0); -- FOR DATAPATH2
 	load: out std_logic_vector(1 downto 0); -- FOR DATAPATH1 AND DATAPATH2
-	operand: out std_logic_vector (15 downto 0); -- FOR MEM.VHD
+	instance: out std_logic_vector (15 downto 0); -- FOR DATAPATH1
 	result_ready: out std_logic -- FOR THE FPGA
 );
 end component;
@@ -72,7 +72,9 @@ end component;
 
 signal load: std_logic_vector(1 downto 0);
 signal k_out: std_logic_vector(3 downto 0);
-
+signal operand_vector: std_logic_vector(15 downto 0);
+signal instance: std_logic_vector(15 downto 0);
+signal result_ready: std_logic;
 begin
 
 inst_control: control_unit port map (
@@ -81,22 +83,23 @@ inst_control: control_unit port map (
 	init => init,
 	load => load,
 	k => k,
-	k_out => k_out
-	operand => operand,
+	k_out => k_out,
+	instance => instance,
 	new_instance => new_instance,
 	result_ready => result_ready,
 );
 
-inst_datapath1: datapath1 port map (
+inst_datapath1: datapath1 port map(
 	clk => clk,
 	rst => rst,
 	load => load,
-	A => A,
+	A_in => instance,
+	B_in => operand,
 	k => k_out,
 	result => result
 );
 
-inst_datapath2: datapath2 port map (
+inst_datapath2: datapath2 port map(
 	clk => clk,
 	rst => rst,
 	load => load, 
@@ -109,7 +112,6 @@ inst_mem: mem port map (
 	clk => clk,
 	rst => rst,
 	load => load,
-	operand =>operand,
 	init => init
 );
 

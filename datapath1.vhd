@@ -7,8 +7,8 @@ port(
 	-- INPUTS
     clk: in std_logic;
     rst: in std_logic;
-	A_in: in unsigned(63 downto 0);
-	B_in: in unsigned(63 downto 0);
+	A_in: in std_logic_vector(63 downto 0);
+	B_in: in std_logic_vector(63 downto 0);
     load: in std_logic_vector(1 downto 0); -- enable result --
 	valid: in std_logic; -- valid inputs --
 	
@@ -26,18 +26,18 @@ architecture Behavioral of datapath1 is
 
 component adder 
 	port(
-	A: in unsigned(31 downto 0); -- Q6.26 --
-	B: in unsigned(31 downto 0); -- Q6.26 --
-	C: out unsigned(31 downto 0) -- Q6.26 --
+	A: in signed(31 downto 0); -- Q6.26 --
+	B: in signed(31 downto 0); -- Q6.26 --
+	C: out signed(31 downto 0) -- Q6.26 --
 	
 );
 end component;
 
 component subtractor
 	port(
-	A: in unsigned(16 downto 0); -- Q4.13 --
-	B: in unsigned(16 downto 0); -- Q4.13 -- 
-	C: out unsigned(16 downto 0) -- Q4.13 --
+	A: in signed (16 downto 0); -- Q4.13 --
+	B: in signed(16 downto 0); -- Q4.13 -- 
+	C: out signed(16 downto 0) -- Q4.13 --
 	
 );
 end component;
@@ -61,30 +61,39 @@ signal output_mult1, output_mult2, output_mult3, output_mult4: signed (33 downto
 signal out_mult1, out_mult2, out_mult3, out_mult4: signed (33 downto 0);
 signal output_adder1, output_adder2, output_adder3: signed( 33 downto 0);
 signal out_adder1, out_adder2: signed( 33 downto 0);
+signal aux_A3,aux_A2,aux_A1,aux_A0,aux_B3,aux_B2,aux_B1,aux_B0: signed(16 downto 0);
 begin
 
+aux_A3 <= signed(A_in(63) & A_in(63 downto 48));
+aux_A2 <= signed(A_in(47) & A_in(47 downto 32));
+aux_A1 <= signed(A_in(31) & A_in(31 downto 16));
+aux_A0 <= signed(A_in(15) & A_in(15 downto 0));
+aux_B0 <= signed(B_in(15) & B_in(15 downto 0));
+aux_B1 <= signed(B_in(31) & B_in(31 downto 16));
+aux_B2 <= signed(B_in(47) & B_in(47 downto 32));
+aux_B3 <= signed(B_in(63) & B_in(63 downto 48));
 
 inst_sub1: subtractor port map(
-A => A_in(15) & A_in(15 downto 0),
-B => B_in(15) & B_in(15 downto 0),
+A =>aux_A0,
+B => aux_B0,
 C => output_sub1
 );
 
 inst_sub2: subtractor port map(
-A => A_in(31) & A_in(31 downto 16),
-B => B_in(31) & B_in(31 downto 16),
+A => aux_A1,
+B => aux_B1,
 C => output_sub2
 );
 
 inst_sub3: subtractor port map(
-A => A_in(47) & A_in(47 downto 32),
-B => B_in(47) & B_in(47 downto 32),
+A => aux_A2,
+B => aux_B2,
 C => output_sub3
 );
 
 inst_sub4: subtractor port map(
-A => A_in(63) & A_in(63 downto 48),
-B => B_in(63) & B_in(63 downto 48),
+A => aux_A3,
+B => aux_B3,
 C=> output_sub4
 );
 
@@ -143,7 +152,7 @@ C=> output_adder3
  out_adder2 <= (others => '0');
 
 
- elsif (load(1) = '1' && valid_mult = '1') then -- Se a instancia for diferente da submetida anteriormente entao carrega no registo de saida, o resultado os calculos efetuados 
+ elsif (load(1) = '1' and valid_mult = '1') then -- Se a instancia for diferente da submetida anteriormente entao carrega no registo de saida, o resultado os calculos efetuados 
 
  out_adder1 <= output_adder1;
  out_adder2 <= output_adder2;
@@ -164,7 +173,7 @@ C=> output_adder3
  out_mult3 <= (others => '0');
  out_mult4 <= (others => '0');
  
- elsif (load(1) ='1' && valid_sub = '1') then -- Se a instancia for diferente da submetida anteriormente entao carrega no registo de saida, o resultado os calculos efetuados 
+ elsif (load(1) ='1' and valid_sub = '1') then -- Se a instancia for diferente da submetida anteriormente entao carrega no registo de saida, o resultado os calculos efetuados 
 
  out_mult1 <= output_mult1;
  out_mult2 <= output_mult2;
@@ -187,7 +196,7 @@ C=> output_adder3
  out_sub3 <= (others => '0');
  out_sub4 <= (others => '0');
  
- elsif (load(1) = '1' && valid = '1') then -- Se a instancia for diferente da submetida anteriormente entao carrega no registo de saida, o resultado os calculos efetuados 
+ elsif (load(1) = '1' and valid = '1') then -- Se a instancia for diferente da submetida anteriormente entao carrega no registo de saida, o resultado os calculos efetuados 
 
  out_sub1 <= output_sub1;
  out_sub2 <= output_sub2;
@@ -206,9 +215,9 @@ process (clk)
  if clk'event and clk='1' then
  if rst='1' then
  C <= (others => '0');
- elsif (load(1) = '1' && valid_add = '1') then -- Se a instancia for diferente da submetida anteriormente entao carrega no registo de saida, o resultado os calculos efetuados 
+ elsif (load(1) = '1' and valid_add = '1') then -- Se a instancia for diferente da submetida anteriormente entao carrega no registo de saida, o resultado os calculos efetuados 
  C <= output_adder3;
- valid_result <= valid_result;
+ --valid_result <= valid_result;
  end if;
  end if;
  end process;
