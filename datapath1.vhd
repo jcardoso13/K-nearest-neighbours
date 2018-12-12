@@ -14,8 +14,8 @@ port(
 	
 	-- OUTPUTS
 	
-    C: out signed(33 downto 0) -- Q8.26 --
-	valid_result: out std_logic; -- TO THE DATAPATH 2 
+    C: out signed(33 downto 0); -- Q8.26 --
+	valid_result: out std_logic -- TO THE DATAPATH 2 
 	
 	
 );
@@ -53,39 +53,38 @@ end component;
 --SIGNALS
 
 signal A1, A2, A3, A4: signed(16 downto 0);
-signal B1, B2, B2, B4: signed(16 downto 0);
-signal valid_sub, valid_mult, valid_add, valid_result;
+signal B1, B2, B3, B4: signed(16 downto 0);
+signal valid_sub, valid_mult, valid_add: std_logic;
 signal output_sub1, output_sub2, output_sub3, output_sub4: signed(16 downto 0);
 signal out_sub1, out_sub2, out_sub3, out_sub4 : signed (16 downto 0);
 signal output_mult1, output_mult2, output_mult3, output_mult4: signed (33 downto 0);
 signal out_mult1, out_mult2, out_mult3, out_mult4: signed (33 downto 0);
 signal output_adder1, output_adder2, output_adder3: signed( 33 downto 0);
 signal out_adder1, out_adder2: signed( 33 downto 0);
-
 begin
 
 
 inst_sub1: subtractor port map(
-A => A_in(15) & A_in(15 downto 0);
-B => B_in(15) & B_in(15 downto 0);
+A => A_in(15) & A_in(15 downto 0),
+B => B_in(15) & B_in(15 downto 0),
 C => output_sub1
 );
 
 inst_sub2: subtractor port map(
-A => A_in(31) & A_in(31 downto 16);
-B => B_in(31) & B_in(31 downto 16);
+A => A_in(31) & A_in(31 downto 16),
+B => B_in(31) & B_in(31 downto 16),
 C => output_sub2
 );
 
 inst_sub3: subtractor port map(
-A => A_in(47) & A_in(47 downto 32);
-B => B_in(47) & B_in(47 downto 32);
+A => A_in(47) & A_in(47 downto 32),
+B => B_in(47) & B_in(47 downto 32),
 C => output_sub3
 );
 
 inst_sub4: subtractor port map(
-A => A_in(63) & A_in(63 downto 48);
-B => B_in(63) & B_in(63 downto 48);
+A => A_in(63) & A_in(63 downto 48),
+B => B_in(63) & B_in(63 downto 48),
 C=> output_sub4
 );
 
