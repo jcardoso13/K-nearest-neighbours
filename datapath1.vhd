@@ -14,7 +14,7 @@ port(
 	
 	-- OUTPUTS
 	
-    C: out signed(33 downto 0); -- Q8.26 --
+    C: out signed(31 downto 0); -- Q6.26 --
 	valid_result: out std_logic -- TO THE DATAPATH 2 
 	
 	
@@ -59,8 +59,8 @@ signal output_sub1, output_sub2, output_sub3, output_sub4: signed(16 downto 0);
 signal out_sub1, out_sub2, out_sub3, out_sub4 : signed (16 downto 0);
 signal output_mult1, output_mult2, output_mult3, output_mult4: signed (33 downto 0);
 signal out_mult1, out_mult2, out_mult3, out_mult4: signed (33 downto 0);
-signal output_adder1, output_adder2, output_adder3: signed( 33 downto 0);
-signal out_adder1, out_adder2: signed( 33 downto 0);
+signal output_adder1, output_adder2, output_adder3: signed( 31 downto 0);
+signal out_adder1, out_adder2: signed( 31 downto 0);
 signal aux_A3,aux_A2,aux_A1,aux_A0,aux_B3,aux_B2,aux_B1,aux_B0: signed(16 downto 0);
 begin
 

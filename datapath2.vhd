@@ -4,11 +4,14 @@ use IEEE.NUMERIC_STD.all;
 
 entity datapath2 is
 port(
-    clk,rst,load: in std_logic;
+    clk,rst: in std_logic;
+    load : in std_logic_vector(1 downto 0); -- the MSB is for datapath1 enable and the other is for datapath2 enable
+    valid : in std_logic; --valid for the datapath1
 	A: in signed(31 downto 0);
-	k: in std_logic_vector(2 downto 0);
-	class: in std_logic_vector(1 downto 0);
-    result: out std_logic_vector(1 downto 0)
+	k_data2: in std_logic_vector(2 downto 0);
+--	class: in std_logic_vector(1 downto 0);
+  result: out std_logic_vector(1 downto 0);
+    done : out std_logic --to the control unit
 	);
 end datapath2;
 
