@@ -17,7 +17,7 @@ end mem;
 architecture Behavioral of mem is
 
 
-component blk_mem_gen_0 is
+component design_1_blk_mem_gen_0_1 is
   Port ( 
     clka : in STD_LOGIC;
     wea : in STD_LOGIC_VECTOR ( 0 to 0 );
@@ -30,25 +30,27 @@ component blk_mem_gen_0 is
     dinb : in STD_LOGIC_VECTOR ( 15 downto 0 );
     doutb : out STD_LOGIC_VECTOR ( 15 downto 0 )
   );
-
+end component;
 
 -- DEFINE mem instance here
-signal data_out: std_logic_vector(15 downto 0); --Q3.13
+signal data_b: std_logic_vector(15 downto 0); --Q3.13;
+signal addr: unsigned(15 downto 0);
 
 begin
 
 
 
-training_mem:blk_mem_ port map(
-addra => addr,
-wea => 0,
+training_mem:design_1_blk_mem_gen_0_1 port map(
+addra => std_logic_vector(addr),
+addrb => (others => '0'),
+wea => (others => '0'),
 clka => clk,
 clkb => clk,
-web => 0,
-dina => 0,
-dinb => 0,
+web => (others => '0'),
+dina => (others => '0'),
+dinb => (others => '0'),
 douta => data_out,
-doutb => 0,
+doutb => data_b
 );
 process (clk)
  begin
