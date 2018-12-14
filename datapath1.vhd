@@ -14,7 +14,7 @@ port(
 	
 	-- OUTPUTS
 	
-    C: out signed(31 downto 0); -- Q6.26 --
+    C: out unsigned(31 downto 0); -- Q6.26 --
 	valid_result: out std_logic -- TO THE DATAPATH 2 
 	
 	
@@ -54,13 +54,11 @@ end component;
 
 signal A1, A2, A3, A4: signed(16 downto 0);
 signal B1, B2, B3, B4: signed(16 downto 0);
-signal valid_sub, valid_mult, valid_add: std_logic;
 signal output_sub1, output_sub2, output_sub3, output_sub4: signed(16 downto 0);
 signal out_sub1, out_sub2, out_sub3, out_sub4 : signed (16 downto 0);
 signal output_mult1, output_mult2, output_mult3, output_mult4: signed (33 downto 0);
 signal out_mult1, out_mult2, out_mult3, out_mult4: signed (33 downto 0);
 signal output_adder1, output_adder2, output_adder3: signed( 31 downto 0);
-signal out_adder1, out_adder2: signed( 31 downto 0);
 signal aux_A3,aux_A2,aux_A1,aux_A0,aux_B3,aux_B2,aux_B1,aux_B0: signed(16 downto 0);
 begin
 
@@ -134,34 +132,12 @@ C=> output_adder2
 );
 
 inst_adder3: adder port map(
-A => out_adder1,
-B=> out_adder2,
+A => output_adder1,
+B=> output_adder2,
 C=> output_adder3
 );
 
 
-
- 
- -- ADD1 AND ADD2 RESULTS SAVED IN THE REGISTERS WHEN THE MULTIPLICATION RESULTS ARE VALID
- 
- process (clk)
- begin
- if clk'event and clk='1' then
- if rst='1' then
- out_adder1 <= (others => '0');
- out_adder2 <= (others => '0');
-
-
- elsif (load(1) = '1' and valid_mult = '1') then -- Se a instancia for diferente da submetida anteriormente entao carrega no registo de saida, o resultado os calculos efetuados 
-
- out_adder1 <= output_adder1;
- out_adder2 <= output_adder2;
- valid_add <= valid_mult;
-
- 
- end if;
- end if;
- end process;
  
  --MULT RESULTS SAVED IN THE REGISTERS WHEN THE SUBTRACTION RESULTS ARE VALID
    process (clk)
@@ -173,13 +149,12 @@ C=> output_adder3
  out_mult3 <= (others => '0');
  out_mult4 <= (others => '0');
  
- elsif (load(1) ='1' and valid_sub = '1') then -- Se a instancia for diferente da submetida anteriormente entao carrega no registo de saida, o resultado os calculos efetuados 
+ elsif (load(1) ='1') then -- Se a instancia for diferente da submetida anteriormente entao carrega no registo de saida, o resultado os calculos efetuados 
 
  out_mult1 <= output_mult1;
  out_mult2 <= output_mult2;
  out_mult3 <= output_mult3;
  out_mult4 <= output_mult4;
- valid_mult <= valid_sub;
  
  end if;
  end if;
@@ -202,24 +177,18 @@ C=> output_adder3
  out_sub2 <= output_sub2;
  out_sub3 <= output_sub3;
  out_sub4 <= output_sub4;
- valid_sub <= valid;
- 
- end if;
- end if;
- end process;
- 
-  
---OUTPUT RESULT SAVED IN THE REGISTER WHEN THE RESULT OF ADDER 1 AND  ADDER 2 IS VALID 
-process (clk)
- begin
- if clk'event and clk='1' then
- if rst='1' then
- C <= (others => '0');
- elsif (load(1) = '1' and valid_add = '1') then -- Se a instancia for diferente da submetida anteriormente entao carrega no registo de saida, o resultado os calculos efetuados 
- C <= output_adder3;
- --valid_result <= valid_result;
- end if;
- end if;
- end process;
 
+ 
+ end if;
+ end if;
+ end process;
+ process (clk)
+ begin
+  if clk'event and clk='1' then
+ if (load(1)='1') then 
+	C <= unsigned(output_adder3);
+	valid_result <= '1';
+end if;
+end if;
+end process;
 end Behavioral;

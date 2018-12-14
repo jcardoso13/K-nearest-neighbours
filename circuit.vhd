@@ -40,7 +40,7 @@ port(
 	load: in std_logic_vector(1 downto 0);
 	A_in: in std_logic_vector(63 downto 0); 
 	B_in: in std_logic_vector(63 downto 0);
-    C: out signed(33 downto 0) ;
+    C: out unsigned(31 downto 0) ;
 	valid: in std_logic;
 	valid_result: out std_logic
 );
@@ -52,7 +52,7 @@ port(
    clk,rst: in std_logic;
    load : in std_logic_vector (1 downto 0);
    valid : in std_logic; --valid for the datapath1
-   A: in signed(31 downto 0);
+   A: in unsigned(31 downto 0);
    k_data2: in std_logic_vector(2 downto 0);
   -- class: in std_logic_vector(1 downto 0);
    result: out std_logic_vector(1 downto 0);
@@ -71,14 +71,14 @@ port(
 end component;
 
 signal load: std_logic_vector(1 downto 0);
-signal k_out: std_logic_vector(3 downto 0);
+signal k_out: std_logic_vector(2 downto 0);
 signal operand: std_logic_vector(15 downto 0);
 signal instance: std_logic_vector(15 downto 0);
 signal result_ready: std_logic;
 signal done: std_logic;
 signal valid_mem: std_logic;
 signal valid_result: std_logic;
-signal C: signed(31 downto 0);
+signal C: unsigned(31 downto 0);
 
 begin
 
