@@ -150,17 +150,17 @@ process (clk)
  count1<=(others => '0');
  count2 <=(others => '0');
  elsif k_data2="001" then
- count0 <=  unsigned(k_calc_reg4_0);
- count1 <=  unsigned(k_calc_reg4_1);
- count2 <=  unsigned(k_calc_reg4_2);
+ count0 <=  "000" & unsigned(k_calc_reg4_0);
+ count1 <=  "000" & unsigned(k_calc_reg4_1);
+ count2 <=  "000" & unsigned(k_calc_reg4_2);
  elsif k_data2="011" then
- count0<= unsigned(k_calc_reg4_0) + unsigned(k_calc_reg3_0) + unsigned(k_calc_reg2_0);
- count1<= unsigned(k_calc_reg4_1)+unsigned(k_calc_reg3_1)+ unsigned(k_calc_reg2_1);
- count2<= unsigned(k_calc_reg4_2)+unsigned(k_calc_reg3_2)+ unsigned(k_calc_reg2_2);
+ count0<= (unsigned("000" & k_calc_reg4_0) + unsigned("000" & k_calc_reg3_0) + unsigned("000" & k_calc_reg2_0));
+ count1<= (unsigned("000" & k_calc_reg4_1)+unsigned("000" & k_calc_reg3_1)+ unsigned("000" & k_calc_reg2_1));
+ count2<= (unsigned("000" & k_calc_reg4_2)+unsigned("000" & k_calc_reg3_2)+ unsigned("000" & k_calc_reg2_2));
  elsif k_data2="101" then
- count0<= unsigned(k_calc_reg4_0)+unsigned(k_calc_reg3_0)+ unsigned(k_calc_reg2_0)+unsigned(k_calc_reg1_0)+unsigned(k_calc_reg0_0);
- count1<= unsigned(k_calc_reg4_1)+unsigned(k_calc_reg3_1)+ unsigned(k_calc_reg2_1)+unsigned(k_calc_reg1_1)+unsigned(k_calc_reg0_1);
- count2<= unsigned(k_calc_reg4_2)+unsigned(k_calc_reg3_2)+ unsigned(k_calc_reg2_2)+unsigned(k_calc_reg1_2)+unsigned(k_calc_reg0_2);
+ count0<= (unsigned("000" & k_calc_reg4_0)+unsigned("000" & k_calc_reg3_0)+ unsigned("000" & k_calc_reg2_0)+unsigned("000" & k_calc_reg1_0)+unsigned("000" & k_calc_reg0_0));
+ count1<= (unsigned("000" & k_calc_reg4_1)+unsigned("000" & k_calc_reg3_1)+ unsigned("000" & k_calc_reg2_1)+unsigned("000" & k_calc_reg1_1)+unsigned("000" & k_calc_reg0_1));
+ count2<= (unsigned("000" & k_calc_reg4_2)+unsigned("000" & k_calc_reg3_2)+ unsigned("000" & k_calc_reg2_2)+unsigned("000" & k_calc_reg1_2)+unsigned("000" & k_calc_reg0_2));
  end if;
  end if;
  end process;

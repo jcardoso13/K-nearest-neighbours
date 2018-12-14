@@ -14,13 +14,13 @@ port(
 	done: in std_logic;
 	k: in std_logic_vector (2 downto 0);
 	
-	new_instance: in std_logic_vector( 15 downto 0);
+	new_instance: in std_logic_vector( 63 downto 0);
 	
 	
 	-- OUTPUTS --
 	k_out: out std_logic_vector(2 downto 0); -- FOR DATAPATH2
 	load: out std_logic_vector(1 downto 0); -- FOR DATAPATH1 AND DATAPATH2
-	instance: out std_logic_vector (15 downto 0); -- FOR MEM.VHD
+	instance: out std_logic_vector (63 downto 0); -- FOR MEM.VHD
 	result_ready: out std_logic -- FOR THE FPGA
 );
 
@@ -31,7 +31,7 @@ architecture Behavioral of control_unit is
 
 	type fsm_states is ( s_initial, s_new_instance, s_old_instance ,s_end);
 	signal currstate, nextstate: fsm_states;
-	signal previous_state: std_logic_vector(15 downto 0);
+	signal previous_state: std_logic_vector(63 downto 0);
 
 begin
 	state_reg: process (clk)

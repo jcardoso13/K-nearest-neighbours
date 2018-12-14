@@ -8,7 +8,7 @@ port(
 	clk: in std_logic; 
 	rst: in std_logic;
 	init: in std_logic;
-	new_instance: in std_logic_vector(15 downto 0);
+	new_instance: in std_logic_vector(63 downto 0);
 	k: in std_logic_vector(2 downto 0);
 	result: out std_logic_vector(1 downto 0)
 );
@@ -25,10 +25,10 @@ port(
 	init: in std_logic;
 	done: in std_logic;
 	k: in std_logic_vector (2 downto 0);
-	new_instance: in std_logic_vector( 15 downto 0);
+	new_instance: in std_logic_vector( 63 downto 0);
 	k_out: out std_logic_vector(2 downto 0); -- FOR DATAPATH2
 	load: out std_logic_vector(1 downto 0); -- FOR DATAPATH1 AND DATAPATH2
-	instance: out std_logic_vector (15 downto 0); -- FOR DATAPATH1
+	instance: out std_logic_vector (63 downto 0); -- FOR DATAPATH1
 	result_ready: out std_logic -- FOR THE FPGA
 );
 end component;
@@ -53,6 +53,7 @@ port(
    load : in std_logic_vector (1 downto 0);
    valid : in std_logic; --valid for the datapath1
    A: in unsigned(31 downto 0);
+   class: in std_logic_vector(1 downto 0);
    k_data2: in std_logic_vector(2 downto 0);
   -- class: in std_logic_vector(1 downto 0);
    result: out std_logic_vector(1 downto 0);
@@ -64,7 +65,8 @@ component mem is
 port(
     clk,rst: in std_logic;
     init: in std_logic;
-    data_out: out std_logic_vector(15 downto 0);
+    data_out: out std_logic_vector(63 downto 0);
+    class_out: out std_logic_vector(1 downto 0);
     valid: out std_logic -- to enter in the datapath1
 
     );
@@ -72,8 +74,9 @@ end component;
 
 signal load: std_logic_vector(1 downto 0);
 signal k_out: std_logic_vector(2 downto 0);
-signal operand: std_logic_vector(15 downto 0);
-signal instance: std_logic_vector(15 downto 0);
+signal operand: std_logic_vector(63 downto 0);
+signal operand_class: std_logic_vector(1 downto 0);
+signal instance: std_logic_vector(63 downto 0);
 signal result_ready: std_logic;
 signal done: std_logic;
 signal valid_mem: std_logic;
@@ -112,6 +115,7 @@ inst_datapath2: datapath2 port map(
 	valid => valid_result,
 	k_data2 => k_out,
 	A => C, -- C is the result from datapath1
+	class => operand_class,
 	load => load, 
 	result => result
 );
@@ -121,6 +125,7 @@ inst_mem: mem port map (
 	rst => rst,
 	valid => valid_mem,
 	data_out=> operand,
+	class_out => operand_class,
 	init => init
 );
 

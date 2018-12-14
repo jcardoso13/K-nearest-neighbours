@@ -57,6 +57,9 @@ architecture Behavioral of fpga_basicIO is
   signal dp_value: std_logic;
   signal reg_value: std_logic_vector(12 downto 0);
   signal aux_value: std_logic_vector(16 downto 0);
+  signal reg4,reg3,reg2,reg1: std_logic_vector(15 downto 0);
+  signal data_in: std_logic_vector(63 downto 0);
+  signal k_new: std_logic_vector(2 downto 0);
   signal init: std_logic;
   component disp7
   port (
@@ -82,10 +85,11 @@ architecture Behavioral of fpga_basicIO is
   end component;
   component circuit
     port(
-     clk in std_logic; 
+        clk: in std_logic; 
 		rst: in std_logic;
 		init: in std_logic;
-		instance: in std_logic_vector(15 downto 0);
+		new_instance: in std_logic_vector(63 downto 0);
+		k: in std_logic_vector(2 downto 0);
 		result: out std_logic_vector(1 downto 0)
       );
   end component;
@@ -107,7 +111,8 @@ begin
       dp_l => dp);
 
 
-tdisp <="00" & res;
+tdisp(1 downto 0) <=res;
+tdisp(15 downto 2) <= (others => '0');
 
   inst_hex0: hex2disp port map(sw => tdisp(3 downto 0), seg => dd0);
   
@@ -127,8 +132,32 @@ tdisp <="00" & res;
       clk => clk,
       rst => btnCreg,
       init  => init,
-      data_in => sw_reg(15 downto 0),
+      new_instance => data_in,
+      k=>k_new,
       result => res);
+      
+    process(clk)
+    begin
+    if rising_edge(clk10Hz) then
+        if(btnLreg='1') then
+             reg1<=reg2;
+             reg2<=reg3;
+             reg3<=reg4;
+             reg4<=sw_reg(15 downto 0);
+        end if;
+        if (btnDreg='1') then
+            k_new<="001";
+        elsif(btnUreg='1') then
+            k_new <="101";
+        elsif(btnCreg='1') then
+            k_new <="011";
+        end if;
+        end if;
+     end process;
+                
+data_in <= reg4 & reg3 & reg2 & reg1;                
+      
+     
       
   process (clk10hz)
     begin
