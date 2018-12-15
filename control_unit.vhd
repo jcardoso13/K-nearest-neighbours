@@ -45,7 +45,7 @@ begin
 		end if ;
 	end process;
 	
-state_comb: process (currstate,rst)
+state_comb: process (currstate,rst,init)
 
 begin  --  process
     nextstate <= currstate ;  
