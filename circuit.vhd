@@ -55,8 +55,7 @@ port(
    A: in unsigned(31 downto 0);
    class: in std_logic_vector(1 downto 0);
    k_data2: in std_logic_vector(2 downto 0);
-  -- class: in std_logic_vector(1 downto 0);
-   result: out std_logic_vector(1 downto 0);
+  class_out: out std_logic_vector(1 downto 0);
    done : out std_logic --to the control unit
     );
 end component;
@@ -82,6 +81,7 @@ signal done: std_logic;
 signal valid_mem: std_logic;
 signal valid_result: std_logic;
 signal C: unsigned(31 downto 0);
+
 
 begin
 
@@ -116,8 +116,10 @@ inst_datapath2: datapath2 port map(
 	k_data2 => k_out,
 	A => C, -- C is the result from datapath1
 	class => operand_class,
-	load => load, 
-	result => result
+	class_out => result,
+	load => load,
+	done => done
+	
 );
 
 inst_mem: mem port map (

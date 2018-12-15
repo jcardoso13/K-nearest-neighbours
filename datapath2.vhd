@@ -10,7 +10,6 @@ port(
 	A: in signed(31 downto 0);
 	k_data2: in std_logic_vector(2 downto 0);
 	class: in std_logic_vector(1 downto 0);
-  result: out std_logic_vector(1 downto 0);
     class_out: out std_logic_vector(1 downto 0);
     done : out std_logic --to the control unit
 	);

@@ -9,8 +9,8 @@ entity mem is
 port(
     clk,rst: in std_logic;
 	init: in std_logic;
-	class_out: out std_logic_vector(1 downto 0);
 	data_out: out std_logic_vector(63 downto 0);
+	class_out : out std_logic_vector(1 downto 0);
 	valid: out std_logic -- to enter in the datapath1
 	);
 end mem;

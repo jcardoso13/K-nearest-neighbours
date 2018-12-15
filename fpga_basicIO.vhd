@@ -136,7 +136,7 @@ tdisp(15 downto 2) <= (others => '0');
       k=>k_new,
       result => res);
       
-    process(clk)
+    process(clk,clk10Hz)
     begin
     if rising_edge(clk10Hz) then
         if(btnLreg='1') then

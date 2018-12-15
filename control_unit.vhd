@@ -45,7 +45,7 @@ begin
 		end if ;
 	end process;
 	
-state_comb: process (currstate,rst,init)
+state_comb: process (currstate,rst,init, new_instance, previous_state, done, k)
 
 begin  --  process
     nextstate <= currstate ;  
@@ -60,6 +60,7 @@ begin  --  process
 			end if;
 			instance <= new_instance; 
 			result_ready <= '0';
+			load <= "00";
 		end if;
 		
 			
@@ -68,15 +69,15 @@ begin  --  process
 		if (done = '1') then 
 		nextstate <= s_end;
 		end if;
-			load <= "11"; -- LOAD FOR DATAPATH1 AND DATAPATH2
-			k_out <= k;
+		load <= "11"; -- LOAD FOR DATAPATH1 AND DATAPATH2
+		k_out <= k;
 		
 		when s_old_instance =>
 		if (done ='1') then 
 		nextstate <= s_end;
 		end if;
-			load <= "01"; -- LOAD ONLY FOR DATAPATH2
-			k_out <= k;
+		load <= "01"; -- LOAD ONLY FOR DATAPATH2
+		k_out <= k;
 		when s_end =>
 		
 			nextstate <= s_initial;

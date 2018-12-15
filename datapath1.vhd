@@ -110,7 +110,7 @@ C=> output_mult2
 inst_mult3: mult port map(
 A=> out_sub3,
 B=> out_sub3,
-C=> out_mult3
+C=> output_mult3
 );
 
 inst_mult4: mult port map(
@@ -185,7 +185,7 @@ C=> output_adder3
  process (clk)
  begin
   if clk'event and clk='1' then
- if (load(1)='1') then 
+ if (load="11") then 
 	C <= unsigned(output_adder3);
 	valid_result <= '1';
 end if;
