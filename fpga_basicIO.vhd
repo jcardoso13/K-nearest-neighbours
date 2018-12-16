@@ -46,7 +46,7 @@ entity fpga_basicIO is
 end fpga_basicIO;
 
 architecture Behavioral of fpga_basicIO is
-  signal dd3, dd2, dd1, dd0 : std_logic_vector(6 downto 0);
+  signal dd0 : std_logic_vector(6 downto 0);
   signal res : std_logic_vector(1 downto 0);
   signal dact : std_logic_vector(3 downto 0);
   signal btnRinstr : std_logic_vector(3 downto 0);
@@ -102,7 +102,7 @@ begin
   dact <= "1111";
 
   inst_disp7: disp7 port map(
-      disp3 => dd3, disp2 => dd2, disp1 => dd1, disp0 => dd0,
+      disp3 => (others => '0') , disp2 =>(others => '0'), disp1 => (others => '0'), disp0 => dd0,
       dp3 => dp_value, dp2 => '0', dp1 => '0', dp0 => '0',  
       dclk => clk_disp,
       dactive => dact,
