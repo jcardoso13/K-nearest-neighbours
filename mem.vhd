@@ -23,13 +23,13 @@ component blk_mem_gen_0 is
     clka : in STD_LOGIC;
     wea : in STD_LOGIC_VECTOR ( 0 to 0 );
     addra : in STD_LOGIC_VECTOR ( 8 downto 0 );
-    dina : in STD_LOGIC_VECTOR ( 15 downto 0 );
-    douta : out STD_LOGIC_VECTOR ( 15 downto 0 );
+    dina : in STD_LOGIC_VECTOR ( 63 downto 0 );
+    douta : out STD_LOGIC_VECTOR ( 63 downto 0 );
     clkb : in STD_LOGIC;
     web : in STD_LOGIC_VECTOR ( 0 to 0 );
     addrb : in STD_LOGIC_VECTOR ( 8 downto 0 );
-    dinb : in STD_LOGIC_VECTOR ( 15 downto 0 );
-    doutb : out STD_LOGIC_VECTOR ( 15 downto 0 )
+    dinb : in STD_LOGIC_VECTOR ( 63 downto 0 );
+    doutb : out STD_LOGIC_VECTOR ( 63 downto 0 )
   );
   end component;
 
@@ -77,7 +77,7 @@ process (clk)
  begin
  if clk'event and clk='1' then
 	if rst='1' then
-		addr <= "0000000";
+		addr <= "000000000";
 	elsif init='1' then
 		addr <= addr+1;
  end if;

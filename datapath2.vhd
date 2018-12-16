@@ -19,7 +19,7 @@ end datapath2;
 architecture Behavioral of datapath2 is
 
 
-signal lowest: unsigned(4 downto 0);
+signal lowest,lowest_buff: unsigned(4 downto 0);
 signal reg4_value,reg3_value,reg2_value,reg1_value,reg0_value: std_logic_vector(31 downto 0);
 signal reg4_class,reg3_class,reg2_class,reg1_class,reg0_class: std_logic_vector(1 downto 0);
 signal reg4_type0,reg4_type1,reg4_type2,reg3_type0,reg3_type1,reg3_type2,reg2_type0,reg2_type1,reg2_type2,reg1_type0,reg1_type1,reg1_type2,reg0_type0,reg0_type1,reg0_type2: std_logic;
@@ -33,12 +33,23 @@ signal aux0:std_logic_vector(1 downto 0);
 signal prev_valid: std_logic;
 begin
 
-lowest(4) <= '1' when unsigned(A) < unsigned(reg4_value) else '0';
-lowest(3) <= '1' when unsigned(A) < unsigned(reg3_value) else '0';
-lowest(2) <= '1' when unsigned(A) < unsigned(reg2_value) else '0';
-lowest(1) <= '1' when unsigned(A) < unsigned(reg1_value) else '0';
-lowest(0) <= '1' when unsigned(A) < unsigned(reg0_value) else '0';
+lowest_buff(4) <= '1' when unsigned(A) < unsigned(reg4_value) else '0';
+lowest_buff(3) <= '1' when unsigned(A) < unsigned(reg3_value) else '0';
+lowest_buff(2) <= '1' when unsigned(A) < unsigned(reg2_value) else '0';
+lowest_buff(1) <= '1' when unsigned(A) < unsigned(reg1_value) else '0';
+lowest_buff(0) <= '1' when unsigned(A) < unsigned(reg0_value) else '0';
 
+
+process(clk)
+begin
+if clk'event and clk='1' then
+if rst='1' then
+lowest<=(others=>'0');
+elsif (valid='1') then
+lowest<=lowest_buff;
+end if;
+end if;
+end process;
 
 process (clk)
  begin

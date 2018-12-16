@@ -60,6 +60,7 @@ signal output_mult1, output_mult2, output_mult3, output_mult4: signed (33 downto
 signal out_mult1, out_mult2, out_mult3, out_mult4: signed (33 downto 0);
 signal output_adder1, output_adder2, output_adder3: signed( 31 downto 0);
 signal aux_A3,aux_A2,aux_A1,aux_A0,aux_B3,aux_B2,aux_B1,aux_B0: signed(16 downto 0);
+signal valid_buff1,valid_buff2: std_logic;
 begin
 
 aux_A3 <= signed(A_in(63) & A_in(63 downto 48));
@@ -149,7 +150,7 @@ C=> output_adder3
  out_mult3 <= (others => '0');
  out_mult4 <= (others => '0');
  
- elsif (load(1) ='1') then -- Se a instancia for diferente da submetida anteriormente entao carrega no registo de saida, o resultado os calculos efetuados 
+ elsif (load(1) ='1' and valid_buff1='1') then -- Se a instancia for diferente da submetida anteriormente entao carrega no registo de saida, o resultado os calculos efetuados 
 
  out_mult1 <= output_mult1;
  out_mult2 <= output_mult2;
@@ -157,6 +158,7 @@ C=> output_adder3
  out_mult4 <= output_mult4;
  
  end if;
+ valid_buff2<=valid_buff1;
  end if;
  end process;
  
@@ -180,12 +182,13 @@ C=> output_adder3
 
  
  end if;
+ valid_buff1<=valid;
  end if;
  end process;
  process (clk)
  begin
   if clk'event and clk='1' then
- if (load="11") then 
+ if (load="11" and valid_buff2='1') then 
 	C <= unsigned(output_adder3);
 	valid_result <= '1';
 end if;
