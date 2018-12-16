@@ -54,7 +54,7 @@ architecture Behavioral of fpga_basicIO is
   signal btnCreg, btnUreg, btnLreg, btnRreg, btnDreg: std_logic;   -- registered input buttons
   signal sw_reg : std_logic_vector(15 downto 0);  -- registered input switches
   signal tdisp : std_logic_vector(15 downto 0); -- Output to Display
-  signal dp_value: std_logic;
+ -- signal dp_value: std_logic;
   signal reg_value: std_logic_vector(12 downto 0);
   signal aux_value: std_logic_vector(16 downto 0);
   signal reg4,reg3,reg2,reg1: std_logic_vector(15 downto 0);
@@ -103,10 +103,10 @@ begin
 
   inst_disp7: disp7 port map(
       disp3 => (others => '0') , disp2 =>(others => '0'), disp1 => (others => '0'), disp0 => dd0,
-      dp3 => dp_value, dp2 => '0', dp1 => '0', dp0 => '0',  
+      dp3 => '0', dp2 => '0', dp1 => '0', dp0 => '0',  
       dclk => clk_disp,
       dactive => dact,
-             en_disp_l => an,
+      en_disp_l => an,
       segm_l => seg,
       dp_l => dp);
 
