@@ -182,7 +182,7 @@ C=> output_adder3
 
  
  end if;
- valid_buff1<=valid;
+ valid_buff1 <=valid;
  end if;
  end process;
  process (clk)

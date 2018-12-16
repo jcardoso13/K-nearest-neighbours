@@ -26,6 +26,7 @@ component blk_mem_gen_0 is
     dina : in STD_LOGIC_VECTOR ( 63 downto 0 );
     douta : out STD_LOGIC_VECTOR ( 63 downto 0 );
     clkb : in STD_LOGIC;
+    enb : IN STD_LOGIC;
     web : in STD_LOGIC_VECTOR ( 0 to 0 );
     addrb : in STD_LOGIC_VECTOR ( 8 downto 0 );
     dinb : in STD_LOGIC_VECTOR ( 63 downto 0 );
@@ -61,6 +62,7 @@ douta => data_out,
 doutb => data_b,
 wea => (others => '0'),
 web => (others => '0'),
+enb => '1',
 dina => (others => '0'),
 dinb =>	(others => '0')
 );
