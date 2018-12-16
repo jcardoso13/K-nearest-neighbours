@@ -33,7 +33,7 @@ architecture Behavioral of control_unit is
 	signal currstate, nextstate: fsm_states;
 	signal previous_state: std_logic_vector(63 downto 0);
 	signal load_instance: std_logic_vector(1 downto 0);
-	signal instance_buff: std_logic_vector(63 downto 0);
+--signal instance_buff: std_logic_vector(63 downto 0);
 
 begin
 	state_reg: process (clk)
@@ -101,14 +101,14 @@ begin  --  process
  if rst='1' then
  instance<=(others => '0');
  previous_state<=(others => '0');
- instance_buff <=(others => '0');
+
  end if;
  if (load_instance(1) ='1') then -- Se a instancia for diferente da submetida anteriormente entao carrega no registo de saida, o resultado os calculos efetuados 
 instance<=new_instance;
-instance_buff <= new_instance;
+previous_state<= new_instance;
  end if;
- if(load_instance(0) ='1') then
- previous_state <= instance_buff;
+ if (load_instance(0) ='1') then
+ previous_state <= new_instance;
  end if;
  end if;
  end process;
