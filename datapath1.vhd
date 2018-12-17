@@ -138,7 +138,28 @@ B=> output_adder2,
 C=> output_adder3
 );
 
+ process (clk)
+ begin
+ if clk'event and clk='1' then
+ if rst='1' then
+ out_sub1 <= (others => '0');
+ out_sub2 <= (others => '0');
+ out_sub3 <= (others => '0');
+ out_sub4 <= (others => '0');
+ 
+elsif (load(1) ='1' and valid ='1') then
 
+ out_sub1 <= output_sub1;
+ out_sub2 <= output_sub2;
+ out_sub3 <= output_sub3;
+ out_sub4 <= output_sub4;
+ valid_buff1 <=valid;
+  end if;
+  
+ end if;
+ 
+
+ end process;
  
  --MULT RESULTS SAVED IN THE REGISTERS WHEN THE SUBTRACTION RESULTS ARE VALID
    process (clk)
@@ -156,35 +177,23 @@ C=> output_adder3
  out_mult2 <= output_mult2;
  out_mult3 <= output_mult3;
  out_mult4 <= output_mult4;
+  valid_buff2<=valid_buff1;
+  
+  else 
+  out_mult1 <= (others => '0');
+   out_mult2 <= (others => '0');
+   out_mult3 <= (others => '0');
+   out_mult4 <= (others => '0');
  
  end if;
- valid_buff2<=valid_buff1;
+
+
  end if;
  end process;
  
 --SUB RESULTS SAVED IN THE REGISTERS WHEN THE INPUTS A AND B ARE VALID
 
-  process (clk)
- begin
- if clk'event and clk='1' then
- if rst='1' then
- out_sub1 <= (others => '0');
- out_sub2 <= (others => '0');
- out_sub3 <= (others => '0');
- out_sub4 <= (others => '0');
  
- elsif (load(1) = '1' and valid = '1') then -- Se a instancia for diferente da submetida anteriormente entao carrega no registo de saida, o resultado os calculos efetuados 
-
- out_sub1 <= output_sub1;
- out_sub2 <= output_sub2;
- out_sub3 <= output_sub3;
- out_sub4 <= output_sub4;
-
- 
- end if;
- valid_buff1 <=valid;
- end if;
- end process;
  process (clk)
  begin
   if clk'event and clk='1' then
