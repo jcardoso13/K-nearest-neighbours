@@ -130,7 +130,7 @@ tdisp(15 downto 2) <= (others => '0');
   btnRinstr <= BtnUreg & sw_reg(15 downto 13);
   inst_circuit: circuit port map(
       clk => clk,
-      rst => btnCreg,
+      rst => '0',
       init  => init,
       new_instance => data_in,
       k=>k_new,

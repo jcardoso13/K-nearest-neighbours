@@ -7,7 +7,7 @@ port(
     clk,rst: in std_logic;
     load : in std_logic_vector(1 downto 0); -- the MSB is for datapath1 enable and the other is for datapath2 enable
     valid : in std_logic; --valid for the datapath1
-	A: in signed(31 downto 0);
+	A: in unsigned(31 downto 0);
 	k_data2: in std_logic_vector(2 downto 0);
 	class: in std_logic_vector(1 downto 0);
     class_out: out std_logic_vector(1 downto 0);
