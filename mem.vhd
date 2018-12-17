@@ -22,13 +22,13 @@ component blk_mem_gen_0 is
     Port ( 
     clka : in STD_LOGIC;
     wea : in STD_LOGIC_VECTOR ( 0 to 0 );
-    addra : in STD_LOGIC_VECTOR ( 8 downto 0 );
+    addra : in STD_LOGIC_VECTOR ( 6 downto 0 );
     dina : in STD_LOGIC_VECTOR ( 63 downto 0 );
     douta : out STD_LOGIC_VECTOR ( 63 downto 0 );
     clkb : in STD_LOGIC;
     enb : IN STD_LOGIC;
     web : in STD_LOGIC_VECTOR ( 0 to 0 );
-    addrb : in STD_LOGIC_VECTOR ( 8 downto 0 );
+    addrb : in STD_LOGIC_VECTOR ( 6 downto 0 );
     dinb : in STD_LOGIC_VECTOR ( 63 downto 0 );
     doutb : out STD_LOGIC_VECTOR ( 63 downto 0 )
   );
@@ -46,7 +46,7 @@ component dist_mem_gen_0 is
 
 -- DEFINE mem instance here
 signal data_b: std_logic_vector(63 downto 0); --Q3.13;
-signal addr: unsigned(8 downto 0);
+signal addr: unsigned(6 downto 0);
 signal addr_class: unsigned(6 downto 0);
 
 begin
@@ -79,7 +79,7 @@ process (clk)
  begin
  if clk'event and clk='1' then
 	if rst='1' then
-		addr <= "000000000";
+		addr <= "0000000";
 	elsif init='1' then
 		addr <= addr+1;
  end if;
@@ -92,11 +92,13 @@ process (clk)
   if clk'event and clk='1' then
      if rst='1' then
          addr_class <= "0000000";
+         valid<='0';
      elsif addr>3 and addr<111 then
          addr_class <= addr_class+1;
          valid <='1';
      else
      valid <='0';
+     addr_class <= "0000000";
   end if;
   end if;
   end process;

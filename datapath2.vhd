@@ -31,6 +31,7 @@ signal k_calc_reg1_0,k_calc_reg1_1,k_calc_reg1_2: std_logic_vector(0 downto 0);
 signal k_calc_reg0_0,k_calc_reg0_1,k_calc_reg0_2: std_logic_vector(0 downto 0);
 signal aux0:std_logic_vector(1 downto 0);
 signal prev_valid: std_logic;
+signal class_out_aux: std_logic_vector(1 downto 0);
 begin
 
 lowest_buff(4) <= '1' when unsigned(A) < unsigned(reg4_value) else '0';
@@ -182,9 +183,9 @@ process (clk)
  begin
   if clk'event and clk='1' then
  if rst='1' then
- class_out <= "11";
+ class_out_aux <= "11";
  elsif load="01" then 
- class_out <= aux0; 
+ class_out_aux <= aux0; 
  end if;
  end if;
  end process;
@@ -196,7 +197,7 @@ process (clk)
  if rst='1' then
  done <= '0';
  elsif prev_valid='1' and valid='0' then 
- class_out <= aux0;
+ class_out <= class_out_aux;
  done<='1'; 
  end if;
  prev_valid<=valid;

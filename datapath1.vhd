@@ -26,9 +26,9 @@ architecture Behavioral of datapath1 is
 
 component adder 
 	port(
-	A: in signed(31 downto 0); -- Q6.26 --
-	B: in signed(31 downto 0); -- Q6.26 --
-	C: out signed(31 downto 0) -- Q6.26 --
+	A: in unsigned(31 downto 0); -- Q6.26 --
+	B: in unsigned(31 downto 0); -- Q6.26 --
+	C: out unsigned(31 downto 0) -- Q6.26 --
 	
 );
 end component;
@@ -45,7 +45,6 @@ end component;
 component mult 
 	port(
 	A:in signed(16 downto 0); -- Q4.13 --
-	B:in signed(16 downto 0); -- Q4.13 --
 	C: out signed(33 downto 0) -- Q8.26 --
 );
 end component; 
@@ -58,8 +57,8 @@ signal output_sub1, output_sub2, output_sub3, output_sub4: signed(16 downto 0);
 signal out_sub1, out_sub2, out_sub3, out_sub4 : signed (16 downto 0);
 signal output_mult1, output_mult2, output_mult3, output_mult4: signed (33 downto 0);
 signal out_mult1, out_mult2, out_mult3, out_mult4: signed (33 downto 0);
-signal output_adder1, output_adder2, output_adder3: signed( 31 downto 0);
-signal aux_A3,aux_A2,aux_A1,aux_A0,aux_B3,aux_B2,aux_B1,aux_B0: signed(16 downto 0);
+signal output_adder1, output_adder2, output_adder3: unsigned( 31 downto 0);
+signal aux_A3,aux_A2,aux_A1,aux_A0,aux_B3,aux_B2,aux_B1,aux_B0,aux1, aux2, aux3, aux4: signed(16 downto 0);
 signal valid_buff1,valid_buff2: std_logic;
 begin
 
@@ -97,38 +96,34 @@ C=> output_sub4
 );
 
 inst_mult1: mult port map(
-A=> out_sub1,
-B=> out_sub1,
+A=> aux1,
 C=> output_mult1
 );
 
 inst_mult2: mult port map(
-A=> out_sub2,
-B=> out_sub2,
+A=> aux2,
 C=> output_mult2
 );
 
 inst_mult3: mult port map(
-A=> out_sub3,
-B=> out_sub3,
+A=> aux3,
 C=> output_mult3
 );
 
 inst_mult4: mult port map(
-A=> out_sub4,
-B=> out_sub4,
+A=> aux4,
 C=> output_mult4
 );
 
 inst_adder1: adder port map(
-A=> out_mult1(31 downto 0),
-B=> out_mult2(31 downto 0),
+A=> unsigned(out_mult1(31 downto 0)),
+B=> unsigned(out_mult2(31 downto 0)),
 C=> output_adder1
 );
 
 inst_adder2: adder port map(
-A=> out_mult3(31 downto 0),
-B=> out_mult4(31 downto 0),
+A=> unsigned(out_mult3(31 downto 0)),
+B=> unsigned(out_mult4(31 downto 0)),
 C=> output_adder2
 );
 
@@ -137,29 +132,38 @@ A => output_adder1,
 B=> output_adder2,
 C=> output_adder3
 );
-
- process (clk)
+ process (clk,output_sub1, output_sub2, output_sub3, output_sub4,valid)
  begin
  if clk'event and clk='1' then
  if rst='1' then
  out_sub1 <= (others => '0');
  out_sub2 <= (others => '0');
  out_sub3 <= (others => '0');
- out_sub4 <= (others => '0');
- 
-elsif (load(1) ='1' and valid ='1') then
+ out_sub4 <= (others => '0'); 
+elsif valid='1' then 
+out_sub1 <= output_sub1;
+out_sub2 <= output_sub2;
+out_sub3 <= output_sub3;
+out_sub4 <= output_sub4;
 
- out_sub1 <= output_sub1;
- out_sub2 <= output_sub2;
- out_sub3 <= output_sub3;
- out_sub4 <= output_sub4;
- valid_buff1 <=valid;
   end if;
-  
- end if;
- 
-
- end process;
+  valid_buff1 <=valid;
+  end if;
+  end process;
+  process(load,out_sub1, out_sub2, out_sub3, out_sub4)
+  begin 
+  if load(1)='1' then
+  aux1 <= out_sub1;
+  aux2 <= out_sub2;
+  aux3 <= out_sub3;
+  aux4 <= out_sub4;
+  else 
+  aux1 <= (others => '0');
+  aux2 <= (others => '0');
+  aux3 <= (others => '0');
+  aux4 <= (others => '0');
+  end if;
+  end process;
  
  --MULT RESULTS SAVED IN THE REGISTERS WHEN THE SUBTRACTION RESULTS ARE VALID
    process (clk)
@@ -177,16 +181,15 @@ elsif (load(1) ='1' and valid ='1') then
  out_mult2 <= output_mult2;
  out_mult3 <= output_mult3;
  out_mult4 <= output_mult4;
-  valid_buff2<=valid_buff1;
   
   else 
-  out_mult1 <= (others => '0');
+   out_mult1 <= (others => '0');
    out_mult2 <= (others => '0');
    out_mult3 <= (others => '0');
    out_mult4 <= (others => '0');
  
  end if;
-
+valid_buff2<=valid_buff1;
 
  end if;
  end process;
@@ -200,6 +203,8 @@ elsif (load(1) ='1' and valid ='1') then
  if (load="11" and valid_buff2='1') then 
 	C <= unsigned(output_adder3);
 	valid_result <= '1';
+	else 
+	valid_result<='0';
 end if;
 end if;
 end process;

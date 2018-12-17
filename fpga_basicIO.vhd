@@ -144,6 +144,7 @@ tdisp(15 downto 2) <= (others => '0');
              reg2<=reg3;
              reg3<=reg4;
              reg4<=sw_reg(15 downto 0);
+             k_new <="000";
         end if;
         if (btnDreg='1') then
             k_new<="001";
