@@ -47,7 +47,7 @@ component dist_mem_gen_0 is
 -- DEFINE mem instance here
 signal data_b: std_logic_vector(63 downto 0); --Q3.13;
 signal addr: unsigned(6 downto 0);
-signal addr_class: unsigned(6 downto 0);
+--signal addr_class: unsigned(6 downto 0);
 
 begin
 
@@ -72,7 +72,7 @@ clk => clk,
 we => '0',
 qspo => class_out,
 d => (others => '0'),
-a => std_logic_vector(addr_class)
+a => std_logic_vector(addr)
 );
 
 process (clk)
@@ -80,28 +80,30 @@ process (clk)
  if clk'event and clk='1' then
 	if rst='1' then
 		addr <= "0000000";
-	elsif init='1' then
+		valid<='0';
+	elsif (init='1' and addr<107) then
 		addr <= addr+1;
+		valid <='1';
+	else
+		valid<='0';
+		
  end if;
  end if;
  end process;
  
  
- process (clk)
-  begin
-  if clk'event and clk='1' then
-     if rst='1' then
-         addr_class <= "0000000";
-         valid<='0';
-     elsif addr>3 and addr<111 then
-         addr_class <= addr_class+1;
-         valid <='1';
-     else
-     valid <='0';
-     addr_class <= "0000000";
-  end if;
-  end if;
-  end process;
+--process (clk)
+--  begin
+--  if clk'event and clk='1' then
+--     if rst='1' then
+--         addr_class <= "0000000";
+--     elsif addr>3 and addr<111 then
+--         addr_class <= addr_class+1;
+--     else
+--     addr_class <= "0000000";
+--  end if;
+--  end if;
+--  end process;
  
  
 

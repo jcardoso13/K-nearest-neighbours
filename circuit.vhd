@@ -9,7 +9,8 @@ port(
 	rst: in std_logic;
 	init: in std_logic;
 	new_instance: in std_logic_vector(63 downto 0);
-	k: in std_logic_vector(2 downto 0);
+	k: in std_logic_vector(1 downto 0);
+	option: in std_logic;
 	result: out std_logic_vector(1 downto 0)
 );
 end circuit;
@@ -24,9 +25,10 @@ port(
 	rst: in std_logic;
 	init: in std_logic;
 	done: in std_logic;
-	k: in std_logic_vector (2 downto 0);
+	option: in std_logic;
+	k: in std_logic_vector (1 downto 0);
 	new_instance: in std_logic_vector( 63 downto 0);
-	k_out: out std_logic_vector(2 downto 0); -- FOR DATAPATH2
+	k_out: out std_logic_vector(1 downto 0); -- FOR DATAPATH2
 	load: out std_logic_vector(1 downto 0); -- FOR DATAPATH1 AND DATAPATH2
 	instance: out std_logic_vector (63 downto 0); -- FOR DATAPATH1
 	result_ready: out std_logic -- FOR THE FPGA
@@ -54,7 +56,7 @@ port(
    valid : in std_logic; --valid for the datapath1
    A: in unsigned(31 downto 0);
    class: in std_logic_vector(1 downto 0);
-   k_data2: in std_logic_vector(2 downto 0);
+   k_data2: in std_logic_vector(1 downto 0);
   class_out: out std_logic_vector(1 downto 0);
    done : out std_logic --to the control unit
     );
@@ -72,7 +74,7 @@ port(
 end component;
 
 signal load: std_logic_vector(1 downto 0);
-signal k_out: std_logic_vector(2 downto 0);
+signal k_out: std_logic_vector(1 downto 0);
 signal operand: std_logic_vector(63 downto 0);
 signal operand_class: std_logic_vector(1 downto 0);
 signal instance: std_logic_vector(63 downto 0);
@@ -92,6 +94,7 @@ inst_control: control_unit port map (
 	load => load,
 	k => k,
 	k_out => k_out,
+	option=>option,
 	instance => instance,
 	new_instance => new_instance,
 	result_ready => result_ready,
@@ -128,7 +131,7 @@ inst_mem: mem port map (
 	valid => valid_mem,
 	data_out=> operand,
 	class_out => operand_class,
-	init => init
+	init => load(1)
 );
 
 end Behavioral;

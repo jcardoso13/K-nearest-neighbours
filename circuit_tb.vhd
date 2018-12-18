@@ -14,13 +14,14 @@ ARCHITECTURE behavior OF circuit_tb IS
     COMPONENT circuit
     
 	port(
-	clk: in std_logic; 
-	rst: in std_logic;
-	init: in std_logic;
-	new_instance: in std_logic_vector(63 downto 0);
-	k: in std_logic_vector(2 downto 0);
-	result: out std_logic_vector(1 downto 0)
-	);
+        clk: in std_logic; 
+        rst: in std_logic;
+        init: in std_logic;
+        new_instance: in std_logic_vector(63 downto 0);
+        k: in std_logic_vector(1 downto 0);
+        option: in std_logic;
+        result: out std_logic_vector(1 downto 0)
+    );
     END COMPONENT;
     
 
@@ -29,8 +30,9 @@ ARCHITECTURE behavior OF circuit_tb IS
    signal rst : std_logic := '0';
 	signal init: std_logic := '0';
 	signal new_instance: std_logic_vector(63 downto 0) 
-	:=x"9CCD60002CCD0667";
-	signal k: std_logic_vector(2 downto 0):="101";
+	:=x"A33300072CCC0666";
+	signal k: std_logic_vector(1 downto 0):="10";
+	signal option: std_logic:='1';
 
  	--Outputs
  	signal result:std_logic_vector(1 downto 0):= (others => '0');
@@ -46,6 +48,7 @@ BEGIN
       init => init,
       new_instance => new_instance,
       k=> k,
+      option=>option,
       result => result
         );
 
@@ -93,15 +96,13 @@ BEGIN
       -- reg_input_Q11 <= b"0000100000" after clk_period; --32
        
        --Case 4
-       
+		rst <= '0';
+		wait for 30 ns;
 		init <= '1';
         wait for 30 ns;
         init <= '0';     
        
 	  
-	  
-	  rst <= '0' after clk_period*4,
-	          '1' after clk_period*200;
 	 
 
       wait;

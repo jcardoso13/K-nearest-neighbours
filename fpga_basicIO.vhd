@@ -56,10 +56,11 @@ architecture Behavioral of fpga_basicIO is
   signal tdisp : std_logic_vector(15 downto 0); -- Output to Display
  -- signal dp_value: std_logic;
   signal reg_value: std_logic_vector(12 downto 0);
+  signal option: std_logic;
   signal aux_value: std_logic_vector(16 downto 0);
   signal reg4,reg3,reg2,reg1: std_logic_vector(15 downto 0);
   signal data_in: std_logic_vector(63 downto 0);
-  signal k_new: std_logic_vector(2 downto 0);
+  signal k_new: std_logic_vector(1 downto 0);
   signal init: std_logic;
   component disp7
   port (
@@ -88,8 +89,9 @@ architecture Behavioral of fpga_basicIO is
         clk: in std_logic; 
 		rst: in std_logic;
 		init: in std_logic;
+		option: in std_logic;
 		new_instance: in std_logic_vector(63 downto 0);
-		k: in std_logic_vector(2 downto 0);
+		k: in std_logic_vector(1 downto 0);
 		result: out std_logic_vector(1 downto 0)
       );
   end component;
@@ -132,6 +134,7 @@ tdisp(15 downto 2) <= (others => '0');
       clk => clk,
       rst => '0',
       init  => init,
+      option => option,
       new_instance => data_in,
       k=>k_new,
       result => res);
@@ -144,20 +147,21 @@ tdisp(15 downto 2) <= (others => '0');
              reg2<=reg3;
              reg3<=reg4;
              reg4<=sw_reg(15 downto 0);
-             k_new <="000";
-        end if;
-        if (btnDreg='1') then
-            k_new<="001";
+             option<='1';
+        elsif (btnDreg='1') then
+            k_new<="00";
+            option<='0';
         elsif(btnUreg='1') then
-            k_new <="101";
+            k_new <="10";
+            option<='0';
         elsif(btnCreg='1') then
-            k_new <="011";
+            k_new <="01";
+            option<='0';
         end if;
         end if;
      end process;
                 
 data_in <= reg4 & reg3 & reg2 & reg1;                
-      
      
       
   process (clk10hz)
