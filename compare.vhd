@@ -36,8 +36,11 @@ architecture Behavioral of compare is
 	
 
 	begin
-	process(reg1, reg2, reg3, reg4, reg5, reg6, reg7, reg8, reg9, reg10, class1, class2, class3, class4, class5, class6, class7, class8, class9, class10)
-	begin
+	
+	process(clk)
+    begin
+     if clk'event and clk='1' then
+	
 
 	if reg10>reg5 then
 		regout5 <= reg5;
@@ -125,38 +128,38 @@ architecture Behavioral of compare is
 	
 	if accum3_1 > aux_reg2_1 then
 		aux_reg2_2 <= aux_reg2_1;
-		class_aux2_2 <= class_accum2_1;
+		class_aux2_2 <= class_aux2_1;
 		accum2_2 <= accum3_1;
 		class_accum2_2 <= class_accum3_1;
 	else
 		aux_reg2_2 <= accum3_1;
 		class_aux2_2 <= class_accum3_1;
 		accum2_2 <= aux_reg2_1;
-		class_accum2_2 <= class_accum2_1;
+		class_accum2_2 <= class_aux2_1;
 	end if;
 		
 	if accum3_2 > aux_reg2_2 then
 		aux_reg2_3 <= aux_reg2_2;
-		class_aux2_3 <= class_accum2_2;
+		class_aux2_3 <= class_aux2_2;
 		accum2_3 <= accum3_2;
 		class_accum2_3 <= class_accum3_2;
 	else
 		aux_reg2_3 <= accum3_2;
 		class_aux2_3 <= class_accum3_2;
 		accum2_3 <= aux_reg2_2;
-		class_accum2_3 <= class_accum2_2;
+		class_accum2_3 <= class_aux2_2;
 	end if;
 	
 	if accum3_3 > aux_reg2_3 then
 		regout2 <= aux_reg2_3;
-		classout2 <= class_accum2_3;
+		classout2 <= class_aux2_3;
 		accum2_4 <= accum3_3;
 		class_accum2_4 <= class_accum3_3;
 	else
 		regout2 <= accum3_3;
 		classout2 <= class_accum3_3;
 		accum2_4 <= aux_reg2_3;
-		class_accum2_4 <= class_accum2_3;
+		class_accum2_4 <= class_aux2_3;
 	end if;
 	
 	if reg6 > reg1 then 
@@ -198,7 +201,7 @@ architecture Behavioral of compare is
 		regout1 <= accum2_4;
 		classout1 <= class_accum2_4;
 	end if; 
-	
+end if;
 	end process; 
 	
 end Behavioral;
