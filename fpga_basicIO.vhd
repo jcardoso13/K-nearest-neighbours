@@ -128,37 +128,37 @@ tdisp(15 downto 2) <= (others => '0');
       rst => '0',
       init  => btnRreg,
       option => btnLreg,
-      new_instance => data_in,
+      new_instance =>data_in,
       k=>k_new,
       result => res);
       
-    process(btnLreg, btnDreg, btnUreg, btnCreg,reg2,reg4,reg3,sw_reg)
-      begin
-        if(btnLreg='1') then
-             reg1<=reg2;
-             reg2<=reg3;
-             reg3<=reg4;
-             reg4<=sw_reg(15 downto 0);
-            
-        elsif (btnDreg='1') then
-            k_new<="00";      
-        elsif(btnUreg='1') then
-            k_new <="10";     
-        elsif(btnCreg='1') then
-            k_new <="01";     
-        end if;
-    
-     end process;
-                
-data_in <= reg4 & reg3 & reg2 & reg1;                
      
-      
-  process (clk10hz)
-    begin
-       if rising_edge(clk10hz) then
-          btnCreg <= btnC; btnUreg <= btnU; btnLreg <= btnL; 
-          btnRreg <= btnR; btnDreg <= btnD;
-          sw_reg <= sw;
-      end if; 
-    end process;    
+
+                          
+     
+        process (clk10hz)
+     begin
+     if rising_edge(clk10hz) then
+        btnCreg <= btnC; btnUreg <= btnU; btnLreg <= btnL; 
+        btnRreg <= btnR; btnDreg <= btnD;
+        sw_reg <= sw;
+       -- 
+         if(btnLreg='1') then
+                    reg1<=reg2;
+                    reg2<=reg3;
+                    reg3<=reg4;
+                    reg4<=sw_reg(15 downto 0);
+                   
+               elsif (btnDreg='1') then
+                   k_new<="00";      
+               elsif(btnUreg='1') then
+                   k_new <="10";     
+               elsif(btnCreg='1') then
+                   k_new <="01";     
+               end if;
+    end if;    
+  end process;
+  data_in <=  reg4 & reg3 & reg2 & reg1;
+    
+    
 end Behavioral;
