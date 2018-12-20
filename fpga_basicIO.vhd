@@ -98,8 +98,7 @@ architecture Behavioral of fpga_basicIO is
 
 begin
   led <= sw_reg;
---  led(15 downto 7) <= (others => '0');
---  led(6 downto 0) <= dd0;
+
     
   dact <= "1111";
 
@@ -123,42 +122,32 @@ tdisp(15 downto 2) <= (others => '0');
     clk100M => clk,
     clk10hz => clk10hz,
     clk_disp => clk_disp); 
-    
-  --    CHANGE SO THE ENTRANCE FOR INSTR IS THE SW_REG UPPER BITS!! 
-  --    CHANGE SO THE ENTRANCE FOR DATA_IN IS SW_REG AFTER CHANGED TO COMPLEMENT 2! 
-  --    btnRinstr <= btnUreg & btnLreg & btnRreg;
-  
-  init <= btnRreg; 
-  btnRinstr <= BtnUreg & sw_reg(15 downto 13);
+
   inst_circuit: circuit port map(
       clk => clk,
       rst => '0',
-      init  => init,
-      option => option,
+      init  => btnRreg,
+      option => btnLreg,
       new_instance => data_in,
       k=>k_new,
       result => res);
       
-    process(clk,clk10Hz)
-    begin
-    if rising_edge(clk10Hz) then
+    process(btnLreg, btnDreg, btnUreg, btnCreg)
+      begin
         if(btnLreg='1') then
              reg1<=reg2;
              reg2<=reg3;
              reg3<=reg4;
              reg4<=sw_reg(15 downto 0);
-             option<='1';
+            
         elsif (btnDreg='1') then
-            k_new<="00";
-            option<='0';
+            k_new<="00";      
         elsif(btnUreg='1') then
-            k_new <="10";
-            option<='0';
+            k_new <="10";     
         elsif(btnCreg='1') then
-            k_new <="01";
-            option<='0';
+            k_new <="01";     
         end if;
-        end if;
+    
      end process;
                 
 data_in <= reg4 & reg3 & reg2 & reg1;                
