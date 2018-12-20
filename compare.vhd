@@ -202,9 +202,10 @@ architecture Behavioral of compare is
 		regout1 <= accum2_4;
 		classout1 <= class_accum2_4;
 	end if; 
-	if valid_in='1' then 
-	valid_out <='1';
-	end if;
+	
+	valid_out <=valid_in;
+
+	
 end if;
 
 	end process; 

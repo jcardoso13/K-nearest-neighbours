@@ -78,10 +78,10 @@ end component;
 	
 	signal final1,final2,final3,final4,final0: std_logic_vector(31 downto 0);
 	signal finalclass1,finalclass2,finalclass3,finalclass4,finalclass0: std_logic_vector(1 downto 0);
-	signal valid_out: std_logic_vector(17 downto 0);
-	signal valid_in: std_logic_vector(8 downto 0);
-	signal valid_data2: std_logic_vector(9 downto 0);
-	signal valid2: std_logic_vector(15 downto 0);
+	signal valid_out: std_logic_vector(18 downto 0);
+	signal valid_in: std_logic_vector(9 downto 0);
+	signal valid_data2: std_logic_vector(10 downto 0);
+	signal valid2: std_logic_vector(16 downto 0);
 	
 	signal count2,count1,count0: unsigned(2 downto 0);
 	signal k_calc_reg4_0,k_calc_reg4_1,k_calc_reg4_2: std_logic_vector(0 downto 0);
@@ -1059,7 +1059,7 @@ classout4 => classout79,
 classout5 => classout80,
 valid_out => valid_out(16)
 );
-valid_in(9) <= valid_out(16) and valid_data2(10);
+valid_in(9) <= valid_out(16);
 inst_compare17: compare port map(
 clk => clk,
 rst => rst,
@@ -1156,11 +1156,11 @@ valid_out => valid_out(17)
  elsif load(0)='1' then 
  class_out <= aux0; 
  end if;
- prev_valid<=valid(0);
+ prev_valid<=valid_out(16);
  end if;
  end process;
 
-done<= '1' when  valid_out(17)='1' else '0';
+done<= '1' when  valid_out(16)='0' and prev_valid ='1' else '0';
 
 
 
