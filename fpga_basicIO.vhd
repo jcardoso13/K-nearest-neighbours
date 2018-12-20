@@ -132,7 +132,7 @@ tdisp(15 downto 2) <= (others => '0');
       k=>k_new,
       result => res);
       
-    process(btnLreg, btnDreg, btnUreg, btnCreg,reg2,reg4,sw_reg)
+    process(btnLreg, btnDreg, btnUreg, btnCreg,reg2,reg4,reg3,sw_reg)
       begin
         if(btnLreg='1') then
              reg1<=reg2;
