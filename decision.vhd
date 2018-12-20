@@ -78,10 +78,10 @@ end component;
 	
 	signal final1,final2,final3,final4,final0: std_logic_vector(31 downto 0);
 	signal finalclass1,finalclass2,finalclass3,finalclass4,finalclass0: std_logic_vector(1 downto 0);
-	signal valid_out: std_logic_vector(18 downto 0);
-	signal valid_in: std_logic_vector(9 downto 0);
-	signal valid_data2: std_logic_vector(10 downto 0);
-	signal valid2: std_logic_vector(16 downto 0);
+	signal valid_out: std_logic_vector(16 downto 0);
+	signal valid_in: std_logic_vector(8 downto 0);
+	signal valid_data2: std_logic_vector(9 downto 0);
+	signal valid2: std_logic_vector(15 downto 0);
 	
 	signal count2,count1,count0: unsigned(2 downto 0);
 	signal k_calc_reg4_0,k_calc_reg4_1,k_calc_reg4_2: std_logic_vector(0 downto 0);
@@ -115,7 +115,7 @@ inst_datapath2_1: datapath2 port map(
 	class2 => class3,
 	class3 => class4,
 	class4 => class5,
-	valid_out => valid2(1)
+	valid_out => valid2(0)
 	
 );
 
@@ -136,9 +136,9 @@ inst_datapath2_2: datapath2 port map(
 	class2 => class8,
 	class3 => class9,
 	class4 => class10,
-	valid_out => valid2(2)
+	valid_out => valid2(1)
 );
-valid_data2(1) <= valid2(1) and valid2(2);
+valid_data2(0) <= valid2(0) and valid2(1);
 inst_datapath2_3: datapath2 port map(
 	clk => clk,
 	rst => rst,
@@ -156,7 +156,7 @@ inst_datapath2_3: datapath2 port map(
 	class2 => class13,
 	class3 => class14,
 	class4 => class15,
-	valid_out => valid2(3)
+	valid_out => valid2(2)
 	
 );
 
@@ -177,10 +177,10 @@ inst_datapath2_4: datapath2 port map(
 	class2 => class18,
 	class3 => class19,
 	class4 => class20,
-	valid_out => valid2(4)
+	valid_out => valid2(3)
 );
 
-valid_data2(2) <= valid2(3) and valid2(4);
+valid_data2(1) <= valid2(2) and valid2(3);
 inst_datapath2_5: datapath2 port map(
 	clk => clk,
 	rst => rst,
@@ -198,7 +198,7 @@ inst_datapath2_5: datapath2 port map(
 	class2 => class23,
 	class3 => class24,
 	class4 => class25,
-	valid_out => valid2(5)
+	valid_out => valid2(4)
 );
 
 inst_datapath2_6: datapath2 port map(
@@ -218,9 +218,9 @@ inst_datapath2_6: datapath2 port map(
 	class2 => class28,
 	class3 => class29,
 	class4 => class30,
-	valid_out => valid2(6)
+	valid_out => valid2(5)
 );
-valid_data2(3) <= valid2(5) and valid2(6);
+valid_data2(2) <= valid2(4) and valid2(5);
 
 inst_datapath2_7: datapath2 port map(
 	clk => clk,
@@ -239,7 +239,7 @@ inst_datapath2_7: datapath2 port map(
 	class2 => class33,
 	class3 => class34,
 	class4 => class35,
-	valid_out => valid2(7)
+	valid_out => valid2(6)
 );
 
 inst_datapath2_8: datapath2 port map(
@@ -259,10 +259,10 @@ inst_datapath2_8: datapath2 port map(
 	class2 => class38,
 	class3 => class39,
 	class4 => class40,
-	valid_out => valid2(8)
+	valid_out => valid2(7)
 );
 
-valid_data2(4) <= valid2(7) and valid2(8);
+valid_data2(3) <= valid2(6) and valid2(7);
 inst_datapath2_9: datapath2 port map(
 	clk => clk,
 	rst => rst,
@@ -280,7 +280,7 @@ inst_datapath2_9: datapath2 port map(
 	class2 => class43,
 	class3 => class44,
 	class4 => class45,
-	valid_out => valid2(9)
+	valid_out => valid2(8)
 );
 
 inst_datapath2_10: datapath2 port map(
@@ -300,9 +300,9 @@ inst_datapath2_10: datapath2 port map(
 	class2 => class48,
 	class3 => class49,
 	class4 => class50,
-	valid_out => valid2(10)
+	valid_out => valid2(9)
 );
-valid_data2(5) <= valid2(9) and valid2(10);
+valid_data2(4) <= valid2(8) and valid2(9);
 
 inst_datapath2_11: datapath2 port map(
 	clk => clk,
@@ -321,7 +321,7 @@ inst_datapath2_11: datapath2 port map(
 	class2 => class53,
 	class3 => class54,
 	class4 => class55,
-	valid_out => valid2(11)
+	valid_out => valid2(10)
 );
 
 inst_datapath2_12: datapath2 port map(
@@ -341,9 +341,9 @@ inst_datapath2_12: datapath2 port map(
 	class2 => class58,
 	class3 => class59,
 	class4 => class60,
-	valid_out => valid2(12)
+	valid_out => valid2(11)
 );
-valid_data2(6) <= valid2(11) and valid2(12);
+valid_data2(5) <= valid2(10) and valid2(11);
 inst_datapath2_13: datapath2 port map(
 	clk => clk,
 	rst => rst,
@@ -361,7 +361,7 @@ inst_datapath2_13: datapath2 port map(
 	class2 => class63,
 	class3 => class64,
 	class4 => class65,
-	valid_out => valid2(13)
+	valid_out => valid2(12)
 );
 
 inst_datapath2_14: datapath2 port map(
@@ -381,10 +381,10 @@ inst_datapath2_14: datapath2 port map(
 	class2 => class68,
 	class3 => class69,
 	class4 => class70,
-	valid_out => valid2(14)
+	valid_out => valid2(13)
 );
 
-valid_data2(7) <= valid2(13) and valid2(14);
+valid_data2(6) <= valid2(12) and valid2(13);
 inst_datapath2_15: datapath2 port map(
 	clk => clk,
 	rst => rst,
@@ -402,7 +402,7 @@ inst_datapath2_15: datapath2 port map(
 	class2 => class73,
 	class3 => class74,
 	class4 => class75,
-	valid_out => valid2(15)
+	valid_out => valid2(14)
 );
 
 inst_datapath2_16: datapath2 port map(
@@ -422,9 +422,9 @@ inst_datapath2_16: datapath2 port map(
 	class2 => class78,
 	class3 => class79,
 	class4 => class80,
-	valid_out => valid2(16)
+	valid_out => valid2(15)
 );
-valid_data2(8) <= valid2(15) and valid2(16);
+valid_data2(7) <= valid2(14) and valid2(15);
 inst_datapath2_17: datapath2 port map(
 	clk => clk,
 	rst => rst,
@@ -442,7 +442,7 @@ inst_datapath2_17: datapath2 port map(
 	class2 => class83,
 	class3 => class84,
 	class4 => class85,
-	valid_out => valid_data2(9)
+	valid_out => valid_data2(8)
 );
 
 inst_datapath2_18: datapath2 port map(
@@ -462,13 +462,13 @@ inst_datapath2_18: datapath2 port map(
 	class2 => class88,
 	class3 => class89,
 	class4 => class90,
-	valid_out => valid_data2(10)
+	valid_out => valid_data2(9)
 );
 
 inst_compare1: compare port map(
 clk => clk,
 rst => rst,
-valid_in => valid_data2(1),
+valid_in => valid_data2(0),
 reg1 => reg1,
 reg2 => reg2, 
 reg3 => reg3,
@@ -499,13 +499,13 @@ classout2 => classout2,
 classout3 => classout3,
 classout4 => classout4,
 classout5 => classout5,
-valid_out => valid_out(1)
+valid_out => valid_out(0)
 );
 
 inst_compare2: compare port map(
 clk => clk,
 rst => rst,
-valid_in => valid_data2(2),
+valid_in => valid_data2(1),
 reg1 => reg11,
 reg2 => reg12, 
 reg3 => reg13,
@@ -536,13 +536,13 @@ classout2 => classout7,
 classout3 => classout8,
 classout4 => classout9,
 classout5 => classout10,
-valid_out => valid_out(2)
+valid_out => valid_out(1)
 );
 
 inst_compare3: compare port map(
 clk => clk,
 rst => rst,
-valid_in => valid_data2(3),
+valid_in => valid_data2(2),
 reg1 => reg21,
 reg2 => reg22, 
 reg3 => reg23,
@@ -573,13 +573,13 @@ classout2 => classout12,
 classout3 => classout13,
 classout4 => classout14,
 classout5 => classout15,
-valid_out => valid_out(3)
+valid_out => valid_out(2)
 );
 
 inst_compare4: compare port map(
 clk => clk,
 rst => rst,
-valid_in => valid_data2(4),
+valid_in => valid_data2(3),
 reg1 => reg31,
 reg2 => reg32, 
 reg3 => reg33,
@@ -610,13 +610,13 @@ classout2 => classout17,
 classout3 => classout18,
 classout4 => classout19,
 classout5 => classout20, 
-valid_out => valid_out(4)
+valid_out => valid_out(3)
 );
 
 inst_compare5: compare port map(
 clk => clk,
 rst => rst,
-valid_in => valid_data2(5),
+valid_in => valid_data2(4),
 reg1 => reg41,
 reg2 => reg42, 
 reg3 => reg43,
@@ -647,13 +647,13 @@ classout2 => classout22,
 classout3 => classout23,
 classout4 => classout24,
 classout5 => classout25,
-valid_out => valid_out(5)
+valid_out => valid_out(4)
 );
 
 inst_compare6: compare port map(
 clk => clk,
 rst => rst,
-valid_in => valid_data2(6),
+valid_in => valid_data2(5),
 reg1 => reg51,
 reg2 => reg52, 
 reg3 => reg53,
@@ -684,13 +684,13 @@ classout2 => classout27,
 classout3 => classout28,
 classout4 => classout29,
 classout5 => classout30,
-valid_out => valid_out(6)
+valid_out => valid_out(5)
 );
 
 inst_compare7: compare port map(
 clk => clk,
 rst => rst,
-valid_in => valid_data2(7),
+valid_in => valid_data2(6),
 reg1 => reg61,
 reg2 => reg62, 
 reg3 => reg63,
@@ -721,13 +721,13 @@ classout2 => classout32,
 classout3 => classout33,
 classout4 => classout34,
 classout5 => classout35, 
-valid_out => valid_out(7)
+valid_out => valid_out(6)
 );
 
 inst_compare8: compare port map(
 clk => clk,
 rst => rst,
-valid_in => valid_data2(8),
+valid_in => valid_data2(7),
 reg1 => reg71,
 reg2 => reg72, 
 reg3 => reg73,
@@ -758,14 +758,14 @@ classout2 => classout37,
 classout3 => classout38,
 classout4 => classout39,
 classout5 => classout40,
-valid_out => valid_out(8)
+valid_out => valid_out(7)
 );
 
-valid_in(1) <=valid_out(1) and valid_out(2);
+valid_in(0) <=valid_out(0) and valid_out(1);
 inst_compare9: compare port map(
 clk => clk,
 rst => rst,
-valid_in => valid_in(1),
+valid_in => valid_in(0),
 reg1 => regout1,
 reg2 => regout2, 
 reg3 => regout3,
@@ -796,14 +796,14 @@ classout2 => classout42,
 classout3 => classout43,
 classout4 => classout44,
 classout5 => classout45,
-valid_out => valid_out(9)
+valid_out => valid_out(8)
 );
 
-valid_in(2)<=valid_out(3) and valid_out(4);
+valid_in(1)<=valid_out(2) and valid_out(3);
 inst_compare10: compare port map(
 clk => clk,
 rst => rst,
-valid_in => valid_in(2),
+valid_in => valid_in(1),
 reg1 => regout11,
 reg2 => regout12, 
 reg3 => regout13,
@@ -834,13 +834,13 @@ classout2 => classout47,
 classout3 => classout48,
 classout4 => classout49,
 classout5 => classout50,
-valid_out => valid_out(10)
+valid_out => valid_out(9)
 );
-valid_in(3)<=valid_out(5) and valid_out(6);
+valid_in(2)<=valid_out(4) and valid_out(5);
 inst_compare11: compare port map(
 clk => clk,
 rst => rst,
-valid_in => valid_in(3),
+valid_in => valid_in(2),
 reg1 => regout21,
 reg2 => regout22, 
 reg3 => regout23,
@@ -871,14 +871,14 @@ classout2 => classout52,
 classout3 => classout53,
 classout4 => classout54,
 classout5 => classout55,
-valid_out => valid_out(11)
+valid_out => valid_out(10)
 );
-valid_in(4)<=valid_out(7) and valid_out(8);
+valid_in(3)<=valid_out(6) and valid_out(7);
 
 inst_compare12: compare port map(
 clk => clk,
 rst => rst,
-valid_in => valid_in(4),
+valid_in => valid_in(3),
 reg1 => regout31,
 reg2 => regout32, 
 reg3 => regout33,
@@ -909,13 +909,13 @@ classout2 => classout57,
 classout3 => classout58,
 classout4 => classout59,
 classout5 => classout60,
-valid_out => valid_out(12)
+valid_out => valid_out(11)
 );
-valid_in(5)<=valid_out(9) and valid_out(10);
+valid_in(4)<=valid_out(8) and valid_out(9);
 inst_compare13: compare port map(
 clk => clk,
 rst => rst,
-valid_in=> valid_in(5),
+valid_in=> valid_in(4),
 reg1 => regout41,
 reg2 => regout42, 
 reg3 => regout43,
@@ -946,13 +946,13 @@ classout2 => classout62,
 classout3 => classout63,
 classout4 => classout64,
 classout5 => classout65,
-valid_out => valid_out(13)
+valid_out => valid_out(12)
 );
-valid_in(6)<=valid_out(11) and valid_out(12);
+valid_in(5)<=valid_out(10) and valid_out(11);
 inst_compare14: compare port map(
 clk => clk,
 rst => rst,
-valid_in=> valid_in(6),
+valid_in=> valid_in(5),
 reg1 => regout51,
 reg2 => regout52, 
 reg3 => regout53,
@@ -983,13 +983,13 @@ classout2 => classout67,
 classout3 => classout68,
 classout4 => classout69,
 classout5 => classout70,
-valid_out => valid_out(14)
+valid_out => valid_out(13)
 );
-valid_in(7)<=valid_out(13) and valid_out(14);
+valid_in(6)<=valid_out(12) and valid_out(13);
 inst_compare15: compare port map(
 clk => clk,
 rst => rst,
-valid_in => valid_in(7),
+valid_in => valid_in(6),
 reg1 => regout61,
 reg2 => regout62, 
 reg3 => regout63,
@@ -1020,13 +1020,13 @@ classout2 => classout72,
 classout3 => classout73,
 classout4 => classout74,
 classout5 => classout75,
-valid_out => valid_out(15)
+valid_out => valid_out(14)
 );
-valid_in(8) <= valid_out(15) and valid_data2(9);
+valid_in(7) <= valid_out(14) and valid_data2(8);
 inst_compare16: compare port map(
 clk => clk,
 rst => rst,
-valid_in => valid_in(8),
+valid_in => valid_in(7),
 reg1 => reg81,
 reg2 => reg82, 
 reg3 => reg83,
@@ -1057,13 +1057,13 @@ classout2 => classout77,
 classout3 => classout78,
 classout4 => classout79,
 classout5 => classout80,
-valid_out => valid_out(16)
+valid_out => valid_out(15)
 );
-valid_in(9) <= valid_out(16);
+valid_in(8) <= valid_out(15);
 inst_compare17: compare port map(
 clk => clk,
 rst => rst,
-valid_in => valid_in(9),
+valid_in => valid_in(8),
 reg1 => reg86,
 reg2 => reg87, 
 reg3 => reg88,
@@ -1094,7 +1094,7 @@ classout2 => finalclass1,
 classout3 => finalclass2,
 classout4 => finalclass3,
 classout5 => finalclass4,
-valid_out => valid_out(17)
+valid_out => valid_out(16)
 );
 
 
