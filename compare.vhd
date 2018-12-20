@@ -9,9 +9,11 @@ port(
 	--Reg1 to Reg5 and Reg6 to Reg10
     reg1, reg2, reg3, reg4, reg5, reg6, reg7, reg8, reg9, reg10: in std_logic_vector(31 downto 0);
 	class1, class2, class3, class4, class5, class6, class7, class8, class9, class10: in std_logic_vector(1 downto 0);
-	
+	valid_in : in std_logic;
+
 	regout1, regout2, regout3, regout4, regout5: out std_logic_vector(31 downto 0);
-	classout1, classout2, classout3, classout4, classout5: out std_logic_vector(1 downto 0)
+	classout1, classout2, classout3, classout4, classout5: out std_logic_vector(1 downto 0);
+	valid_out: out std_logic
 	
 	);
 end compare;
@@ -41,7 +43,6 @@ architecture Behavioral of compare is
     begin
      if clk'event and clk='1' then
 	
-
 	if reg10>reg5 then
 		regout5 <= reg5;
 		classout5 <= class5;
@@ -201,7 +202,11 @@ architecture Behavioral of compare is
 		regout1 <= accum2_4;
 		classout1 <= class_accum2_4;
 	end if; 
+	if valid_in='1' then 
+	valid_out <='1';
+	end if;
 end if;
+
 	end process; 
 	
 end Behavioral;

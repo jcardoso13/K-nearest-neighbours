@@ -11,7 +11,8 @@ port(
 	
 	class: in std_logic_vector(1 downto 0);
     reg1,reg2,reg3,reg4,reg0: out std_logic_vector(31 downto 0);
-   class1,class2,class3,class4,class0: out std_logic_vector(1 downto 0)
+   class1,class2,class3,class4,class0: out std_logic_vector(1 downto 0);
+   valid_out: out std_logic
 	);
 end datapath2;
 
@@ -131,6 +132,6 @@ lowest<= lowest_buff when valid='1' else (others=>'0');
  reg0<=reg0_value;
  class0<=reg0_class;
  
-
+valid_out <= valid;
 
 end Behavioral;
