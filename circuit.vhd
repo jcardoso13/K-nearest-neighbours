@@ -11,7 +11,8 @@ port(
 	new_instance: in std_logic_vector(63 downto 0);
 	k: in std_logic_vector(1 downto 0);
 	option: in std_logic;
-	result: out std_logic_vector(1 downto 0)
+	result: out std_logic_vector(1 downto 0);
+	result_ready: out std_logic
 );
 end circuit;
 
@@ -83,7 +84,6 @@ signal k_out: std_logic_vector(1 downto 0);
 signal operand: std_logic_vector(1151 downto 0);
 signal operand_class: std_logic_vector(1 downto 0);
 signal instance: std_logic_vector(63 downto 0);
-signal result_ready: std_logic;
 signal done: std_logic;
 signal valid_mem: std_logic;
 signal valid_result: std_logic_vector(17 downto 0);

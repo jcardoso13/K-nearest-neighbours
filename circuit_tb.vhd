@@ -30,7 +30,7 @@ ARCHITECTURE behavior OF circuit_tb IS
    signal rst : std_logic := '0';
 	signal init: std_logic := '0';
 	signal new_instance: std_logic_vector(63 downto 0) 
-	:=x"A33300072CCC0666";
+	:=x"DCCC63339CCC3000";
 	signal k: std_logic_vector(1 downto 0):="10";
 	signal option: std_logic:='1';
 

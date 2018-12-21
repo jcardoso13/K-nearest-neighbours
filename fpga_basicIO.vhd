@@ -1,24 +1,3 @@
-----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
--- 
--- Create Date: 09/13/2016 07:01:44 PM
--- Design Name: 
--- Module Name: fpga_basicIO - Behavioral
--- Project Name: 
--- Target Devices: 
--- Tool Versions: 
--- Description: 
--- 
--- Dependencies: 
--- 
--- Revision:
--- Revision 0.01 - File Created
--- Additional Comments:
--- 
-----------------------------------------------------------------------------------
-
-
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_ARITH.ALL;
@@ -56,12 +35,12 @@ architecture Behavioral of fpga_basicIO is
   signal tdisp : std_logic_vector(15 downto 0); -- Output to Display
  -- signal dp_value: std_logic;
   signal reg_value: std_logic_vector(12 downto 0);
-  signal option: std_logic;
+
   signal aux_value: std_logic_vector(16 downto 0);
   signal reg4,reg3,reg2,reg1: std_logic_vector(15 downto 0);
   signal data_in: std_logic_vector(63 downto 0);
   signal k_new: std_logic_vector(1 downto 0);
-  signal init: std_logic;
+  signal result_ready: std_logic;
   component disp7
   port (
    disp3, disp2, disp1, disp0 : in std_logic_vector(6 downto 0);
@@ -92,7 +71,8 @@ architecture Behavioral of fpga_basicIO is
 		option: in std_logic;
 		new_instance: in std_logic_vector(63 downto 0);
 		k: in std_logic_vector(1 downto 0);
-		result: out std_logic_vector(1 downto 0)
+		result: out std_logic_vector(1 downto 0);
+		result_ready: out std_logic
       );
   end component;
 
@@ -112,8 +92,9 @@ begin
       dp_l => dp);
 
 
-tdisp(1 downto 0) <=res;
-tdisp(15 downto 2) <= (others => '0');
+tdisp(3 downto 0) <= "00"&res when result_ready='1' else X"F";
+
+tdisp(15 downto 4) <= (others => '0');
 
   inst_hex0: hex2disp port map(sw => tdisp(3 downto 0), seg => dd0);
   
@@ -130,7 +111,9 @@ tdisp(15 downto 2) <= (others => '0');
       option => btnLreg,
       new_instance =>data_in,
       k=>k_new,
-      result => res);
+      result => res,
+      result_ready => result_ready
+      );
       
      
 
