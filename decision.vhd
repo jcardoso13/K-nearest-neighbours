@@ -1146,7 +1146,7 @@ valid_out => valid_out(16)
  end if;
  end process;
  
- aux0<="00" when ((count0>count1) and (count0>count2)) else "01" when ((count1>count0) and (count1>count2)) else "10" when ((count2>count0) and (count2>count1)) else "11"; 
+ aux0<="00" when ((count0>=count1) and (count0>=count2)) else "01" when ((count1>count0) and (count1>count2)) else "10" when ((count2>count0) and (count2>=count1)) else "11"; 
  
  process(clk)
  begin

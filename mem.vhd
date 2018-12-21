@@ -21,16 +21,8 @@ architecture Behavioral of mem is
 component blk_mem_gen_0 is
     Port ( 
     clka : in STD_LOGIC;
-    wea : in STD_LOGIC_VECTOR ( 0 to 0 );
     addra : in STD_LOGIC_VECTOR ( 2 downto 0 );
-    dina : in STD_LOGIC_VECTOR ( 1151 downto 0 );
-    douta : out STD_LOGIC_VECTOR ( 1151 downto 0 );
-    clkb : in STD_LOGIC;
-    enb : IN STD_LOGIC;
-    web : in STD_LOGIC_VECTOR ( 0 to 0 );
-    addrb : in STD_LOGIC_VECTOR ( 2 downto 0 );
-    dinb : in STD_LOGIC_VECTOR ( 1151 downto 0 );
-    doutb : out STD_LOGIC_VECTOR ( 1151 downto 0 )
+    douta : out STD_LOGIC_VECTOR ( 1151 downto 0 )
   );
   end component;
 
@@ -56,16 +48,8 @@ begin
 
 training_mem:blk_mem_gen_0 port map(
 addra=> std_logic_vector(addr),
-addrb => (others => '0'),
 clka => clk,
-clkb => clk,
-douta => data_out,
-doutb => data_b,
-wea => (others => '0'),
-web => (others => '0'),
-enb => '1',
-dina => (others => '0'),
-dinb =>	(others => '0')
+douta => data_out
 );
 
 training_mem_classes: dist_mem_gen_0 port map(
@@ -81,15 +65,25 @@ process (clk)
  if clk'event and clk='1' then
 	if rst='1' then
 		addr <= "000";
-		addr_class<="1101";
 		valid<='0';
-	elsif (init='1' and addr<5) then
+		addr_class<="1111";
+	elsif (init='1' and addr=0) then
 		addr <= addr+1;
 		addr_class<=addr_class+1;
-		valid <='1';
-	else
 		valid<='0';
-		
+	elsif(addr=1) then
+	   addr <= addr+1;
+	   addr_class<=addr_class+1;
+	   valid<='1';
+	elsif(addr>1 and addr<6) then
+	     addr <= addr+1;
+         addr_class<=addr_class+1;
+         valid <='1';
+	elsif (addr_class<6 and addr_class>0) then
+	   addr_class<=addr_class+1;
+	   valid<='1';
+	else
+	   valid<='0';
  end if;
  end if;
  end process;
