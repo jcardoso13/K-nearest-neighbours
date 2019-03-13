@@ -1,24 +1,3 @@
-----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
--- 
--- Create Date: 09/13/2016 07:01:44 PM
--- Design Name: 
--- Module Name: fpga_basicIO - Behavioral
--- Project Name: 
--- Target Devices: 
--- Tool Versions: 
--- Description: 
--- 
--- Dependencies: 
--- 
--- Revision:
--- Revision 0.01 - File Created
--- Additional Comments:
--- 
-----------------------------------------------------------------------------------
-
-
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_ARITH.ALL;
@@ -56,12 +35,12 @@ architecture Behavioral of fpga_basicIO is
   signal tdisp : std_logic_vector(15 downto 0); -- Output to Display
  -- signal dp_value: std_logic;
   signal reg_value: std_logic_vector(12 downto 0);
-  signal option: std_logic;
+
   signal aux_value: std_logic_vector(16 downto 0);
   signal reg4,reg3,reg2,reg1: std_logic_vector(15 downto 0);
   signal data_in: std_logic_vector(63 downto 0);
   signal k_new: std_logic_vector(1 downto 0);
-  signal init: std_logic;
+  signal result_ready: std_logic;
   component disp7
   port (
    disp3, disp2, disp1, disp0 : in std_logic_vector(6 downto 0);
@@ -92,14 +71,14 @@ architecture Behavioral of fpga_basicIO is
 		option: in std_logic;
 		new_instance: in std_logic_vector(63 downto 0);
 		k: in std_logic_vector(1 downto 0);
-		result: out std_logic_vector(1 downto 0)
+		result: out std_logic_vector(1 downto 0);
+		result_ready: out std_logic
       );
   end component;
 
 begin
   led <= sw_reg;
---  led(15 downto 7) <= (others => '0');
---  led(6 downto 0) <= dd0;
+
     
   dact <= "1111";
 
@@ -113,8 +92,9 @@ begin
       dp_l => dp);
 
 
-tdisp(1 downto 0) <=res;
-tdisp(15 downto 2) <= (others => '0');
+tdisp(3 downto 0) <= "00"&res;
+
+tdisp(15 downto 4) <= (others => '0');
 
   inst_hex0: hex2disp port map(sw => tdisp(3 downto 0), seg => dd0);
   
@@ -123,53 +103,45 @@ tdisp(15 downto 2) <= (others => '0');
     clk100M => clk,
     clk10hz => clk10hz,
     clk_disp => clk_disp); 
-    
-  --    CHANGE SO THE ENTRANCE FOR INSTR IS THE SW_REG UPPER BITS!! 
-  --    CHANGE SO THE ENTRANCE FOR DATA_IN IS SW_REG AFTER CHANGED TO COMPLEMENT 2! 
-  --    btnRinstr <= btnUreg & btnLreg & btnRreg;
-  
-  init <= btnRreg; 
-  btnRinstr <= BtnUreg & sw_reg(15 downto 13);
+
   inst_circuit: circuit port map(
       clk => clk,
-      rst => '0',
-      init  => init,
-      option => option,
-      new_instance => data_in,
+      rst => sw_reg(0),
+      init  => btnRreg,
+      option => btnLreg,
+      new_instance =>data_in,
       k=>k_new,
-      result => res);
+      result => res,
+      result_ready => result_ready
+      );
       
-    process(clk,clk10Hz)
-    begin
-    if rising_edge(clk10Hz) then
-        if(btnLreg='1') then
-             reg1<=reg2;
-             reg2<=reg3;
-             reg3<=reg4;
-             reg4<=sw_reg(15 downto 0);
-             option<='1';
-        elsif (btnDreg='1') then
-            k_new<="00";
-            option<='0';
-        elsif(btnUreg='1') then
-            k_new <="10";
-            option<='0';
-        elsif(btnCreg='1') then
-            k_new <="01";
-            option<='0';
-        end if;
-        end if;
-     end process;
-                
-data_in <= reg4 & reg3 & reg2 & reg1;                
      
-      
-  process (clk10hz)
-    begin
-       if rising_edge(clk10hz) then
-          btnCreg <= btnC; btnUreg <= btnU; btnLreg <= btnL; 
-          btnRreg <= btnR; btnDreg <= btnD;
-          sw_reg <= sw;
-      end if; 
-    end process;    
+
+                          
+     
+        process (clk10hz)
+     begin
+     if rising_edge(clk10hz) then
+        btnCreg <= btnC; btnUreg <= btnU; btnLreg <= btnL; 
+        btnRreg <= btnR; btnDreg <= btnD;
+        sw_reg <= sw;
+       -- 
+         if(btnLreg='1') then
+                    reg1<=reg2;
+                    reg2<=reg3;
+                    reg3<=reg4;
+                    reg4<=sw_reg(15 downto 0);
+                   
+               elsif (btnDreg='1') then
+                   k_new<="00";      
+               elsif(btnUreg='1') then
+                   k_new <="10";     
+               elsif(btnCreg='1') then
+                   k_new <="01";     
+               end if;
+    end if;    
+  end process;
+  data_in <=  reg4 & reg3 & reg2 & reg1;
+  --data_in <=x"A33300072CCC0666";    
+    
 end Behavioral;

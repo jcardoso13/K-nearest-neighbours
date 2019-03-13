@@ -8,10 +8,11 @@ port(
     load : in std_logic_vector(1 downto 0); -- the MSB is for datapath1 enable and the other is for datapath2 enable
     valid : in std_logic; --valid for the datapath1
 	A: in unsigned(31 downto 0);
-	k_data2: in std_logic_vector(1 downto 0);
+	
 	class: in std_logic_vector(1 downto 0);
-    class_out: out std_logic_vector(1 downto 0);
-    done : out std_logic --to the control unit
+    reg1,reg2,reg3,reg4,reg0: out std_logic_vector(31 downto 0);
+   class1,class2,class3,class4,class0: out std_logic_vector(1 downto 0);
+   valid_out: out std_logic
 	);
 end datapath2;
 
@@ -22,16 +23,6 @@ architecture Behavioral of datapath2 is
 signal lowest,lowest_buff: unsigned(4 downto 0);
 signal reg4_value,reg3_value,reg2_value,reg1_value,reg0_value: std_logic_vector(31 downto 0);
 signal reg4_class,reg3_class,reg2_class,reg1_class,reg0_class: std_logic_vector(1 downto 0);
-signal reg4_type0,reg4_type1,reg4_type2,reg3_type0,reg3_type1,reg3_type2,reg2_type0,reg2_type1,reg2_type2,reg1_type0,reg1_type1,reg1_type2,reg0_type0,reg0_type1,reg0_type2: std_logic;
-signal count2,count1,count0: unsigned(2 downto 0);
-signal k_calc_reg4_0,k_calc_reg4_1,k_calc_reg4_2: std_logic_vector(0 downto 0);
-signal k_calc_reg3_0,k_calc_reg3_1,k_calc_reg3_2: std_logic_vector(0 downto 0);
-signal k_calc_reg2_0,k_calc_reg2_1,k_calc_reg2_2: std_logic_vector(0 downto 0);
-signal k_calc_reg1_0,k_calc_reg1_1,k_calc_reg1_2: std_logic_vector(0 downto 0);
-signal k_calc_reg0_0,k_calc_reg0_1,k_calc_reg0_2: std_logic_vector(0 downto 0);
-signal aux0:std_logic_vector(1 downto 0);
-signal prev_valid: std_logic;
-signal class_out_aux: std_logic_vector(1 downto 0);
 begin
 
 lowest_buff(4) <= '1' when unsigned(A) < unsigned(reg4_value) else '0';
@@ -125,70 +116,22 @@ lowest<= lowest_buff when valid='1' else (others=>'0');
  end if;
  end process;
  
- k_calc_reg4_0<="1" when reg4_class="00" else "0";
- k_calc_reg4_1<="1" when reg4_class="01" else "0";
- k_calc_reg4_2<="1" when reg4_class="10" else "0";
  
- k_calc_reg3_0<="1" when reg3_class="00" else "0";
- k_calc_reg3_1<="1" when reg3_class="01" else "0";
- k_calc_reg3_2<="1" when reg3_class="10" else "0";
+ reg1<=reg1_value;
+ class1<=reg1_class;
  
- k_calc_reg2_0<="1" when reg2_class="00" else "0";
- k_calc_reg2_1<="1" when reg2_class="01" else "0";
- k_calc_reg2_2<="1" when reg2_class="10" else "0";
+ reg2<=reg2_value;
+ class2<=reg2_class;
  
- k_calc_reg1_0<="1" when reg1_class="00" else "0";
- k_calc_reg1_1<="1" when reg1_class="01" else "0";
- k_calc_reg1_2<="1" when reg1_class="10" else "0";
+ reg3<=reg3_value;
+ class3<=reg3_class;
  
- k_calc_reg0_0<="1" when reg0_class="00" else "0";
- k_calc_reg0_1<="1" when reg0_class="01" else "0";
- k_calc_reg0_2<="1" when reg0_class="10" else "0";
-
-
-
+ reg4<=reg4_value;
+ class4<=reg4_class;
  
+ reg0<=reg0_value;
+ class0<=reg0_class;
  
- 
- process(clk)
- begin
- if clk'event and clk='1' then
- if rst='1' then
- count0<=(others => '0');
- count1<=(others => '0');
- count2 <=(others => '0');
- elsif k_data2="00" then
- count0 <=  "00" & unsigned(k_calc_reg4_0);
- count1 <=  "00" & unsigned(k_calc_reg4_1);
- count2 <=  "00" & unsigned(k_calc_reg4_2);
- elsif k_data2="01" then
- count0<= (unsigned("00" & k_calc_reg4_0) + unsigned("00" & k_calc_reg3_0) + unsigned("00" & k_calc_reg2_0));
- count1<= (unsigned("00" & k_calc_reg4_1)+unsigned("00" & k_calc_reg3_1)+ unsigned("00" & k_calc_reg2_1));
- count2<= (unsigned("00" & k_calc_reg4_2)+unsigned("00" & k_calc_reg3_2)+ unsigned("00" & k_calc_reg2_2));
- elsif k_data2="10" then
- count0<= (unsigned("00" & k_calc_reg4_0)+unsigned("00" & k_calc_reg3_0)+ unsigned("00" & k_calc_reg2_0)+unsigned("00" & k_calc_reg1_0)+unsigned("00" & k_calc_reg0_0));
- count1<= (unsigned("00" & k_calc_reg4_1)+unsigned("00" & k_calc_reg3_1)+ unsigned("00" & k_calc_reg2_1)+unsigned("00" & k_calc_reg1_1)+unsigned("00" & k_calc_reg0_1));
- count2<= (unsigned("00" & k_calc_reg4_2)+unsigned("00" & k_calc_reg3_2)+ unsigned("00" & k_calc_reg2_2)+unsigned("00" & k_calc_reg1_2)+unsigned("00" & k_calc_reg0_2));
- end if;
- end if;
- end process;
- 
- aux0<="00" when ((count0>count1) and (count0>count2)) else "01" when ((count1>count0) and (count1>count2)) else "10" when ((count2>count0) and (count2>count1)) else "11"; 
- 
- process(clk)
- begin
-  if clk'event and clk='1' then
- if rst='1' then
- class_out <= "11";
- elsif load(0)='1' then 
- class_out <= aux0; 
- end if;
- prev_valid<=valid;
- end if;
- end process;
-
-done<= '1' when prev_valid='1' and valid='0' else '0';
-
-
+valid_out <= valid;
 
 end Behavioral;
