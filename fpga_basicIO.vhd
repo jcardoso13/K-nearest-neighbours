@@ -92,7 +92,7 @@ begin
       dp_l => dp);
 
 
-tdisp(3 downto 0) <= "00"&res when result_ready='1' else X"F";
+tdisp(3 downto 0) <= "00"&res;
 
 tdisp(15 downto 4) <= (others => '0');
 
@@ -106,7 +106,7 @@ tdisp(15 downto 4) <= (others => '0');
 
   inst_circuit: circuit port map(
       clk => clk,
-      rst => '0',
+      rst => sw_reg(0),
       init  => btnRreg,
       option => btnLreg,
       new_instance =>data_in,
@@ -142,6 +142,6 @@ tdisp(15 downto 4) <= (others => '0');
     end if;    
   end process;
   data_in <=  reg4 & reg3 & reg2 & reg1;
-    
+  --data_in <=x"A33300072CCC0666";    
     
 end Behavioral;
